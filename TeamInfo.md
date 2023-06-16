@@ -10,8 +10,8 @@
 | Captain     |  shomali2@illinois.edu |
 | Member1     |       Manu Pillai      |
 | Member1     |  mpilla6@illinois.edu  |
-| Member2     |                        |
-| Member2     |                        |
+| Member2     |       Junu Jeon        |
+| Member2     |  junuj2@illinois.edu   |
 | Member3     |                        |
 | Member3     |                        |
 
