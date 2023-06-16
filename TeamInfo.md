@@ -12,8 +12,8 @@
 | Member1     |  mpilla6@illinois.edu  |
 | Member2     |       Junu Jeon        |
 | Member2     |  junuj2@illinois.edu   |
-| Member3     |                        |
-| Member3     |                        |
+| Member3     |  Rishi Goyal                      |
+| Member3     |            rgoyal8@illinois.edu            |
 
 ## Project Information
 
