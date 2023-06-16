@@ -8,8 +8,8 @@
 | TeamName    |        juicyfruit      |
 | Captain     |       Afif Shomali     |
 | Captain     |  shomali2@illinois.edu |
-| Member1     |                        |
-| Member1     |                        |
+| Member1     |       Manu Pillai      |
+| Member1     |  mpilla6@illinois.edu  |
 | Member2     |                        |
 | Member2     |                        |
 | Member3     |                        |
