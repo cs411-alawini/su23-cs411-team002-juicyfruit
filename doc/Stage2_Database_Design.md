@@ -54,9 +54,9 @@ User_Recommended_Games(
 
 User_Information(
   UserID: INT [PK],
+  ComputerId: VARCHAR(255) [FK to Computer_Information.ComputerID],
   Name: VARCHAR(255),
-  Password: VARCHAR(255),
-  ComputerId: VARCHAR(255)
+  Password: VARCHAR(255)
 );
 
 Computer_Information(
