@@ -36,8 +36,9 @@ Games(
 
 Reviews(
     reviewID: INT [PK],
-    gameID: INT [PK],,
+    gameID: INT [PK],
     GameName: varchar(255),
+    reviewScore: INT,
     reviewText: varchar(255),
     reviewVotes: INT
   );
