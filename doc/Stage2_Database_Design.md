@@ -28,9 +28,9 @@ Games(
   );
 
 User_Recommended_Games(
-  LikedID: varchar(255) PRIMARY KEY,
-  GameID: varchar(255) PRIMARY KEY,
-  UserID: varchar(255) PRIMARY KEY,
+  LikedID: varchar(255) [PK],
+  GameID: varchar(255) [PK],
+  UserID: varchar(255) [PK],
   GameName: varchar(255),
   UserRating: INT,
   TimePlayed: INT;
@@ -65,10 +65,11 @@ Games_Owned( UserID: INT [PK],
   GameID: INT [PK] 
 );
 
-Meets_Specs( ComputerID: INT [PK],
-	           GameID: INT [PK],
-		MeetsMinSpec: BOOL,
-		MeetsRecSpec: BOOL 
+Meets_Specs(
+  ComputerID: INT [PK],
+  GameID: INT [PK],
+  MeetsMinSpec: BOOL,
+  MeetsRecSpec: BOOL 
 );
 
 ```
