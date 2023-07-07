@@ -73,7 +73,7 @@ User_PC(
 );
 
 Friends(
-  UserID: INT [PK]
+  UserID: INT [PK],
   FriendID: INT
 );
 
