@@ -19,7 +19,7 @@ Games(
     numReccomendations: INT;
   );
 
-  Reviews(
+Reviews(
     reviewID: INT [PK],
     gameID: INT [PK],,
     GameName: varchar(255),
@@ -61,7 +61,8 @@ Friends(
   FriendId: INT
 );
 
-Games_Owned( UserID: INT [PK],
+Games_Owned(
+  UserID: INT [PK],
   GameID: INT [PK] 
 );
 
