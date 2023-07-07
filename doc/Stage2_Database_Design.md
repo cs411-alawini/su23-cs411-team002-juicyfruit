@@ -1,1 +1,1 @@
-<img src="./Diagram.svg">
+<img src="./Diagram.png">
