@@ -44,7 +44,7 @@ Reviews(
   );
 
 User_Recommended_Games(
-  LikedID: varchar(255) [PK],
+  ReccID: varchar(255) [PK],
   GameID: varchar(255) [PK],
   UserID: varchar(255) [PK],
   GameName: varchar(255),
