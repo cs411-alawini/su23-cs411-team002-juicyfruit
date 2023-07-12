@@ -104,15 +104,19 @@ CREATE TABLE Games_Owned(
 
 # Advanced Queries 
 
-## Query 1
+## Query 1 
+
+```sql
 SELECT g.GameName, MetacriticRating , CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore
 FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
 GROUP BY g.GameName, MetacriticRating
 HAVING AvgScore > 0.5
 ORDER BY g.GameName
 LIMIT 15;
+```
+## Query 2 
 
-## Query 2
+```sql
 (SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore
 FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
 WHERE  CategorySinglePlayer = 1 AND g.Price < 20.0
@@ -128,7 +132,7 @@ GROUP BY g.GameName, g.Price
 HAVING AvgScore > 0.5)
 ORDER BY GameName
 LIMIT 15;
-
+```
 
 # Index Analysis 
 
