@@ -1,5 +1,9 @@
 # Database Tables on GCP
 <img src="./images/DataBaseGCP.png"> 
+
+# Insertions
+<img src="./images/TableCounts.png"> 
+
 # DDL Commands 
 
 ```sql 
@@ -103,9 +107,6 @@ CREATE TABLE Games_Owned(
 	PRIMARY KEY(UserID, GameID)
 );
 ```
-
-# Insertions
-<img src="./images/TableCounts.png"> 
 
 # Advanced Queries 
 
