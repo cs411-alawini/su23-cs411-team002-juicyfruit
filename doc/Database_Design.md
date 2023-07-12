@@ -167,5 +167,5 @@ Index for single player also decreased cost 665.51 from 2048.
 <img src="./images/Query2SingleIDX.png"> 
 
 The price index deceased the cost for nested loop inner join from 22k to 823.
-<img src="./images/Query2PriceIDX.png"> 
+<img src="./images/Query2PriceIDx.png"> 
 
