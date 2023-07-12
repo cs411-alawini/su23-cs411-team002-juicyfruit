@@ -110,6 +110,16 @@ CREATE TABLE Games_Owned(
 
 # Index Analysis 
 
-## Query 1
+## Query 1:
+We added an index on gameName, but found no difference in the cost. 
+Index on metacritic rating also had no change on cost.
+reviewScore index no change in cost
+
+Since we’re using an aggregate function and we are using the primary key to join tables which forces the compiler to go through a full table scan no matter what
+
 
 ## Query 2
+Creating index for categoryMultiplayer changed cost from 2048 to 393.11
+Index for single player also decreased cost 665.51 from 2048
+The price index deceased the cost for nested loop inner join from 22k to 823
+
