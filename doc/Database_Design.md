@@ -106,6 +106,7 @@ CREATE TABLE Games_Owned(
 
 # Insertions
 <img src="./images/TableCounts.png"> 
+
 # Advanced Queries 
 
 # Index Analysis 
