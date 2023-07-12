@@ -115,3 +115,7 @@ CREATE TABLE Games_Owned(
 ## Query 2
 
 # Index Analysis 
+
+## Query 1
+
+## Query 2
