@@ -21,7 +21,7 @@ CREATE TABLE Games(
   CategorySinglePlayer BOOL, 
   CategoryMultiplayer BOOL, 
   CategoryCoop BOOL,
-   CategoryMMO BOOL, 
+  CategoryMMO BOOL, 
   CategoryInAppPurchase BOOL, 
   CategoryIncludeSrcSDK BOOL, 
   CategoryIncludeLevelEditor BOOL, 
@@ -44,14 +44,12 @@ CREATE TABLE Games(
   DescriptionText TEXT(22512)
 );
 
-
 CREATE TABLE User_Information(
   UserID VARCHAR(255) PRIMARY KEY,
   ComputerID INT, 
   Name VARCHAR(255),
   Password VARCHAR(255)
 );
-
 
 CREATE TABLE Computer_Information(
   ComputerID INT PRIMARY KEY REFERENCES User_Information(ComputerID) ON DELETE CASCADE,
@@ -82,14 +80,11 @@ CREATE TABLE User_Recommended_Games(
   FOREIGN KEY (UserID) REFERENCES User_Information(UserID) ON DELETE CASCADE
 );
 
-
-
 CREATE TABLE Friends(
   UserID VARCHAR(255) REFERENCES User_Information(UserID) ON DELETE CASCADE,
   FriendID VARCHAR(255),
   PRIMARY KEY(UserID, FriendID)
 );
-
 
 CREATE TABLE Meets_Specs(
   ComputerID INT REFERENCES Computer_Information(ComputerID) ON DELETE CASCADE,
