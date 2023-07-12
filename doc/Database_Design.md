@@ -114,6 +114,8 @@ HAVING AvgScore > 0.5
 ORDER BY g.GameName
 LIMIT 15;
 ```
+<img src="./images/Query1.png"> 
+
 ## Query 2 
 
 ```sql
@@ -133,6 +135,7 @@ HAVING AvgScore > 0.5)
 ORDER BY GameName
 LIMIT 15;
 ```
+<img src="./images/Query2.png"> 
 
 # Index Analysis 
 
