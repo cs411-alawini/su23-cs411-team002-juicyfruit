@@ -102,7 +102,7 @@ CREATE TABLE Games_Owned(
 	PRIMARY KEY(UserID, GameID)
 );
 
-```
+``
 # Insertions
 <img src="./images/TableCounts.png"> 
 # Advanced Queries 
