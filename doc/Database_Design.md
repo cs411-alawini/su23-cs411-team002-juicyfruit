@@ -157,7 +157,15 @@ Since we’re using an aggregate function and we are using the primary key to jo
 
 
 ## Query 2
-Creating index for categoryMultiplayer changed cost from 2048 to 393.11.
+Default Index:
+<img src="./images/Query2NoIDX.png">  
+
+Creating index for categoryMultiplayer changed cost from 2048 to 393.11. 
+<img src="./images/Query2Multidx.png"> 
+
 Index for single player also decreased cost 665.51 from 2048.
+<img src="./images/Query2SingleIDX.png"> 
+
 The price index deceased the cost for nested loop inner join from 22k to 823.
+<img src="./images/Query2PriceIDX.png"> 
 
