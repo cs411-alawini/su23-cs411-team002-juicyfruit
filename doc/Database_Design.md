@@ -1,6 +1,7 @@
 # Database Tables on GCP
 <img src="./images/DataBaseGCP.png"> 
 # DDL Commands 
+
 ```sql 
 CREATE TABLE Games(
   GameID INT PRIMARY KEY,
@@ -101,6 +102,7 @@ CREATE TABLE Games_Owned(
 	GameID INT REFERENCES Games(GameID) ON DELETE CASCADE,
 	PRIMARY KEY(UserID, GameID)
 );
+```
 
 # Insertions
 <img src="./images/TableCounts.png"> 
