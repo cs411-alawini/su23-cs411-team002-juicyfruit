@@ -140,9 +140,18 @@ LIMIT 15;
 # Index Analysis 
 
 ## Query 1:
+
+Default Index: 
+<img src="./images/Query1ExplainNoIDX.png"> 
+
 We added an index on gameName, but found no difference in the cost. 
+<img src="./images/Query1NameIDX.png"> 
+
 Index on metacritic rating also had no change on cost.
+<img src="./images/Query1metaidx.png"> 
+
 reviewScore index no change in cost
+<img src="./images/Query1ReviewScoreIDX.png"> 
 
 Since we’re using an aggregate function and we are using the primary key to join tables which forces the compiler to go through a full table scan no matter what
 
