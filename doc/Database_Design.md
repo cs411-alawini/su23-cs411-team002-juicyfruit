@@ -15,7 +15,6 @@ CREATE TABLE Games(
   numReccomendations INT, 
   numOwners INT, 
   numPlayers INT, 
-  Price FLOAT,
   PlatformWindows BOOL, 
   PlatformLinux BOOL, 
   PlatformMac BOOL, 
@@ -39,7 +38,8 @@ CREATE TABLE Games(
   GenreIsFreeToPlay BOOL, 
   GenreIsSports BOOL, 
   GenreIsRacing BOOL, 
-  GenreIsMassivelyMultiplayer BOOL, 
+  GenreIsMassivelyMultiplayer BOOL,
+  Price FLOAT,
   AboutText TEXT(22512), 
   DescriptionText TEXT(22512)
 );
