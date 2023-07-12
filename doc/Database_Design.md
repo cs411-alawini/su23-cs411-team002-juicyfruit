@@ -96,9 +96,9 @@ CREATE TABLE Meets_Specs(
 );
 
 CREATE TABLE Games_Owned(
-	UserID VARCHAR(255) references User_Information(UserID) ON DELETE CASCADE,
-	GameID INT REFERENCES Games(GameID) ON DELETE CASCADE,
-	PRIMARY KEY(UserID, GameID)
+  UserID VARCHAR(255) references User_Information(UserID) ON DELETE CASCADE,
+  GameID INT REFERENCES Games(GameID) ON DELETE CASCADE,
+  PRIMARY KEY(UserID, GameID)
 );
 ```
 
