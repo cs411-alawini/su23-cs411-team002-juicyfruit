@@ -65,7 +65,6 @@ CREATE TABLE Reviews(
   GameID INT,
   GameName VARCHAR(255),
   reviewScore INT,
-  reviewText TEXT(8873),
   reviewVotes INT,
   PRIMARY KEY (reviewID, gameID),
   FOREIGN KEY (gameID) REFERENCES Games(gameID) ON DELETE CASCADE
