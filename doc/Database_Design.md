@@ -1,7 +1,7 @@
 # Database Tables on GCP
 <img src="./images/DataBaseGCP.png"> 
-# DDL Commands
-```sql
+# DDL Commands 
+```sql 
 CREATE TABLE Games(
   GameID INT PRIMARY KEY,
   GameName VARCHAR(255),
@@ -102,7 +102,6 @@ CREATE TABLE Games_Owned(
 	PRIMARY KEY(UserID, GameID)
 );
 
-``
 # Insertions
 <img src="./images/TableCounts.png"> 
 # Advanced Queries 
