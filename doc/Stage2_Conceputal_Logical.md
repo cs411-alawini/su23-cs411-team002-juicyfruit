@@ -1,5 +1,5 @@
 ## Diagram:
-<img src="./Diagram.png"> 
+<img src="../images/Diagram.png"> 
 
 ## Assumptions & Relationships:
 
