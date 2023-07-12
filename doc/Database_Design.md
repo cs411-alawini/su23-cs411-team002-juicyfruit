@@ -110,4 +110,8 @@ CREATE TABLE Games_Owned(
 
 # Advanced Queries 
 
+## Query 1
+
+## Query 2
+
 # Index Analysis 
