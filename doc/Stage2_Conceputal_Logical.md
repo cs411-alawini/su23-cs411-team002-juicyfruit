@@ -78,13 +78,13 @@ Friends(
 );
 
 Games_Owned(
-  UserID: INT [PK],
-  GameID: INT [PK] 
+  UserID: INT [PK,FK],
+  GameID: INT [PK,FK]
 );
 
 Meets_Specs(
   ComputerID: INT [PK],
-  GameID: INT [PK],
+  GameID: INT [PK,FK],
   MeetsMinSpec: BOOL,
   MeetsRecSpec: BOOL 
 );
