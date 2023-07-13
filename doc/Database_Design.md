@@ -171,7 +171,8 @@ Creating index for categoryMultiplayer changed the filter and index lookup cost 
  
 
 Index for single player also decreased cost 665.51 from 2048 in the first block, however, the inner join costs keep rising even higher. 
-<img src="./images/Query2SingleIDX.png"> 
+<img width="1420" alt="single_idx" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/45309260-2175-4436-9469-a4013dd3a7cf">
+
 
 The price index deceased the cost for nested loop inner join from 22k to 823 as well as the filter cost of the second block down to 53. However, the nested loop inner join in the first block has now skyrocketed to above 100,000.
 <img src="./images/Query2PriceIDx.png"> 
