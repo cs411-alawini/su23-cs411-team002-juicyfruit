@@ -68,8 +68,8 @@ Computer_Information(
 );
 
 User_PC(
-  UserID: INT [PK],
-  ComputerID: VARCHAR(255) [PK]
+  UserID: INT [PK,FK],
+  ComputerID: VARCHAR(255) [PK,FK]
 );
 
 Friends(
@@ -83,7 +83,7 @@ Games_Owned(
 );
 
 Meets_Specs(
-  ComputerID: INT [PK],
+  ComputerID: INT [PK,FK],
   GameID: INT [PK,FK],
   MeetsMinSpec: BOOL,
   MeetsRecSpec: BOOL 
