@@ -147,25 +147,26 @@ Default Index: The costs are relativly high with the nested inner loop join havi
 We added an index on gameName, but found no difference in the cost. We chose gameName because it was one of the attributes that didn't have a pointer to it. 
 <img src="./images/Query1NameIDX.png"> 
 
-Index on metacritic rating also had no change on cost. We chose to index on metacritic as well since it was in out select cause without a pointer pointing to it, but it makes sense it had no impact on the cost since we are simply printing the critics.
+Index on metacritic rating also had no change on cost. We chose to index on metacritic as well since it was in our select cause without a pointer pointing to it, but it makes sense it had no impact on the cost since we are simply printing the critics.
 <img src="./images/Query1metaidx.png"> 
 
-reviewScore index no change in cost. We decided to index this because the aggregate function would be using this attribute to calculate a value for a specific game, yet it still did not change cost.
+Index on reviewScore also had no change in cost. We decided to index this because the aggregate function would be using this attribute to calculate a value for a specific game, yet it still did not change cost.
 <img src="./images/Query1ReviewScoreIDX.png"> 
 
 Overall, we did not find any significant change in cost even though we tried indexing 3 different attributes. We believe it is because we’re using an aggregate function and we are using the primary key to join tables which forces the compiler to go through a full table scan no matter what. Another possibility could be that the indexes weren't properly forming, however, we do not believe that is the case since a change was found on query #2. Due to this, we deicded to not use any indexing for this query as it did not change the cost associated with it.
 
 
 ## Query 2
-Default Index: 
+Default Index: This query has a lot more going on due to the fact we are using a set operation. The nested inner loop joins for both aspects of the query had a cost of 2177 and a filter cost of 2048. The cost for table scans were also 2048. 
 <img src="./images/Query2NoIDX.png">  
 
-Creating index for categoryMultiplayer changed cost from 2048 to 393.11. 
+Creating index for categoryMultiplayer changed the filter and index lookup cost from 2048 to 393.11 of the second block. However, this also had a consequence of increasing the cost of both nested inner loop joins to above 9000, much higher than the original 2177. 
 <img src="./images/Query2Multidx.png"> 
 
-Index for single player also decreased cost 665.51 from 2048.
+Index for single player also decreased cost 665.51 from 2048 in the first block, however, the inner join costs keep rising even higher. 
 <img src="./images/Query2SingleIDX.png"> 
 
-The price index deceased the cost for nested loop inner join from 22k to 823.
+The price index deceased the cost for nested loop inner join from 22k to 823 as well as the filter cost of the second block down to 53. However, the nested loop inner join in the first block has now skyrocketed to above 100,000.
 <img src="./images/Query2PriceIDx.png"> 
 
+Overall, we did find significant differences when we started indexing certain attributes. There was a general trend of where we index a certain attribute, the filter and index look up costs kept decreasing while the nested loop inner joins kept increasing. This leads to a dilemma as to what to pick for indexing. There is both a benefit and detriment to choosing these indices. We believe the inner join for the first block kept skyrocketing due to the fact that we are using a set operation and it is causing some increased overhead. We think that since a price index drastically changed the cost for the second inner join cost, that it would be optimal to use that going forward. 
