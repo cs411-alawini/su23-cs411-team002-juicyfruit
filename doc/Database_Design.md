@@ -106,7 +106,7 @@ CREATE TABLE Games_Owned(
 
 ## Query 1 
 Write one SQL query to return the GameName and MetacriticRating of each Game
-with average reviewScore above 90. Output the result in ascending order by GameName.
+with average reviewScore above 0.5. Output the result in ascending order by GameName.
 
 
 ```sql
