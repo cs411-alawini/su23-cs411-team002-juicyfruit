@@ -141,23 +141,23 @@ LIMIT 15;
 
 ## Query 1:
 
-Default Index: 
+Default Index: The costs are relativly high with the nested inner loop join having a cost of 207878, table scan having a cost of 2414, and index lookup having a cost of 12.56. These costs could mean that the query is using a lot of resources to get what is needed.
 <img src="./images/Query1ExplainNoIDX.png"> 
 
-We added an index on gameName, but found no difference in the cost. 
+We added an index on gameName, but found no difference in the cost. We chose gameName because it was one of the attributes that didn't have a pointer to it. 
 <img src="./images/Query1NameIDX.png"> 
 
-Index on metacritic rating also had no change on cost.
+Index on metacritic rating also had no change on cost. We chose to index on metacritic as well since it was in out select cause without a pointer pointing to it, but it makes sense it had no impact on the cost since we are simply printing the critics.
 <img src="./images/Query1metaidx.png"> 
 
-reviewScore index no change in cost
+reviewScore index no change in cost. We decided to index this because the aggregate function would be using this attribute to calculate a value for a specific game, yet it still did not change cost.
 <img src="./images/Query1ReviewScoreIDX.png"> 
 
-Since we’re using an aggregate function and we are using the primary key to join tables which forces the compiler to go through a full table scan no matter what
+Overall, we did not find any significant change in cost even though we tried indexing 3 different attributes. We believe it is because we’re using an aggregate function and we are using the primary key to join tables which forces the compiler to go through a full table scan no matter what. Another possibility could be that the indexes weren't properly forming, however, we do not believe that is the case since a change was found on query #2. Due to this, we deicded to not use any indexing for this query as it did not change the cost associated with it.
 
 
 ## Query 2
-Default Index:
+Default Index: 
 <img src="./images/Query2NoIDX.png">  
 
 Creating index for categoryMultiplayer changed cost from 2048 to 393.11. 
