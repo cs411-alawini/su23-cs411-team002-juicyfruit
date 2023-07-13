@@ -105,7 +105,7 @@ CREATE TABLE Games_Owned(
 # Advanced Queries 
 
 ## Query 1 
-Write one SQL query to return the GameName, MetacriticRating, and average review score as AvgScore of each Game with an average reviewScore above 0.5. Output the result in ascending order by GameName. The average score should be a decimal rounded to two decimal places.
+Write one SQL query to return the GameName, MetacriticRating, and average review score as AvgScore of each Game, where the average reviewScore is above 0.5. Output the result in ascending order by GameName. The average score should be a decimal rounded to two decimal places.
 
 
 ```sql
