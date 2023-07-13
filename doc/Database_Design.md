@@ -117,6 +117,8 @@ LIMIT 15;
 <img src="./images/Query1.png"> 
 
 ## Query 2 
+Write a SQL query that returns the GameName, price, multiplayer support, and average reviewScore of 'SinglePlayer' games that have 'reviewScore’ of more than .5 and a price more than $10 and 'MultiPlayer' games that have 'reviewScore’ of more than .5 and price less than $10. Return the results in ascending order of GameName.
+
 
 ```sql
 (SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore, CategorySinglePlayer, CategoryMultiPlayer
