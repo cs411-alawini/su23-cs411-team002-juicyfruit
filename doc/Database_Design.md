@@ -119,18 +119,18 @@ LIMIT 15;
 ## Query 2 
 
 ```sql
-(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore
+(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore, CategorySinglePlayer, CategoryMultiPlayer
 FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
-WHERE  CategorySinglePlayer = 1 AND g.Price < 20.0
-GROUP BY g.GameName, g.Price
+WHERE  CategorySinglePlayer = 1 AND g.Price > 10.0
+GROUP BY g.GameName, g.Price, CategorySinglePlayer, CategoryMultiPlayer
 HAVING AvgScore > 0.5)
 
 UNION
 
-(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore
+(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore, CategorySinglePlayer, CategoryMultiPlayer
 FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
-WHERE  CategoryMultiPlayer = 1 AND  g.Price  > 50.0
-GROUP BY g.GameName, g.Price
+WHERE  CategoryMultiPlayer = 1 AND  g.Price  < 10.0
+GROUP BY g.GameName, g.Price, CategorySinglePlayer, CategoryMultiPlayer
 HAVING AvgScore > 0.5)
 ORDER BY GameName
 LIMIT 15;
