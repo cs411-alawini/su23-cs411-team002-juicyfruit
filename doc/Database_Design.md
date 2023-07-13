@@ -167,7 +167,8 @@ Default Index: This query has a lot more going on due to the fact we are using a
   
 
 Creating index for categoryMultiplayer changed the filter and index lookup cost from 2048 to 393.11 of the second block. However, this also had a consequence of increasing the cost of both nested inner loop joins to above 9000, much higher than the original 2177. 
-<img src="./images/Query2Multidx.png"> 
+<img width="1416" alt="multi_idx" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/8f6855ef-7f76-4473-a282-33d89713fd4d">
+ 
 
 Index for single player also decreased cost 665.51 from 2048 in the first block, however, the inner join costs keep rising even higher. 
 <img src="./images/Query2SingleIDX.png"> 
