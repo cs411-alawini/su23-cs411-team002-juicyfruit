@@ -136,9 +136,7 @@ ORDER BY GameName
 LIMIT 15;
 ```
 
-<img width="1026" alt="image" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/1eb43e91-a950-424e-b2d3-5d1f6fe28a73">
-
-<img src="./images/Query2.png"> 
+<img width="1026" alt="image" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/1eb43e91-a950-424e-b2d3-5d1f6fe28a73"> 
 
 # Index Analysis 
 
