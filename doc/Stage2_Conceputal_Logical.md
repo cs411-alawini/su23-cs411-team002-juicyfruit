@@ -36,7 +36,7 @@ Games(
 
 Reviews(
     reviewID: INT [PK],
-    gameID: INT [PK],
+    gameID: INT [PK,FK],
     GameName: varchar(255),
     reviewScore: INT,
     reviewText: varchar(255),
@@ -45,8 +45,8 @@ Reviews(
 
 User_Recommended_Games(
   ReccID: varchar(255) [PK],
-  GameID: varchar(255) [PK],
-  UserID: varchar(255) [PK],
+  GameID: varchar(255) [PK,FK],
+  UserID: varchar(255) [PK,FK],
   GameName: varchar(255),
   UserRating: INT,
   TimePlayed: INT;
