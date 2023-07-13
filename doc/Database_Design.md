@@ -175,6 +175,7 @@ Index for single player also decreased cost 665.51 from 2048 in the first block,
 
 
 The price index deceased the cost for nested loop inner join from 22k to 823 as well as the filter cost of the second block down to 53. However, the nested loop inner join in the first block has now skyrocketed to above 100,000.
-<img src="./images/Query2PriceIDx.png"> 
+<img width="1413" alt="price_idx" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/8aa718a9-9f25-422d-b9bd-3a7db4e9655b">
+
 
 Overall, we did find significant differences when we started indexing certain attributes. There was a general trend of where we index a certain attribute, the filter and index look up costs kept decreasing while the nested loop inner joins kept increasing. This leads to a dilemma as to what to pick for indexing. There is both a benefit and detriment to choosing these indices. We believe the inner join for the first block kept skyrocketing due to the fact that we are using a set operation and it is causing some increased overhead. We think that since a price index drastically changed the cost for the second inner join cost, that it would be optimal to use that going forward. 
