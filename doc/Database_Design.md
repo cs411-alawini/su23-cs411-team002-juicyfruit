@@ -163,7 +163,8 @@ Overall, we did not find any significant change in cost even though we tried ind
 
 ## Query 2
 Default Index: This query has a lot more going on due to the fact we are using a set operation. The nested inner loop joins for both aspects of the query had a cost of 2177 and a filter cost of 2048. The cost for table scans were also 2048. 
-<img src="./images/Query2NoIDX.png">  
+<img width="1412" alt="original" src="https://github.com/cs411-alawini/su23-cs411-team002-juicyfruit/assets/102842764/43fda976-6784-4af0-bdac-58b49ae996fa">
+  
 
 Creating index for categoryMultiplayer changed the filter and index lookup cost from 2048 to 393.11 of the second block. However, this also had a consequence of increasing the cost of both nested inner loop joins to above 9000, much higher than the original 2177. 
 <img src="./images/Query2Multidx.png"> 
