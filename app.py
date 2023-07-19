@@ -6,6 +6,8 @@ import sqlalchemy
 app = Flask(__name__)
 
 # Connecting to our MySql Database
+# https://pypi.org/project/cloud-sql-python-connector/ 
+
 connector = Connector()
 
 def getconn() -> pymysql.connections.Connection:
@@ -24,22 +26,24 @@ pool = sqlalchemy.create_engine(
 )
 
 #Flask App Routes
-@app.route('/')
-def test():
-
-    with pool.connect() as db_conn:
-        results = db_conn.execute(sqlalchemy.text("SELECT Name FROM User_Information LIMIT 9")).fetchall()
-
-    ret_list = []
-
-    for row in results:
-        ret_list.append(row[0])
-
-    print(ret_list)
-    connector.close()
-
-    return jsonify(ret_list)
+@app.route('/', methods=["GET"])
+def index():
+    return render_template("login.html")
+   
+@app.route('/signup', methods=["GET"])
+def signup():
+    return render_template("signup.html")
 
 
+ # with pool.connect() as db_conn:
+    #     results = db_conn.execute(sqlalchemy.text("SELECT Name FROM User_Information LIMIT 9")).fetchall()
 
+    # ret_list = []
 
+    # for row in results:
+    #     ret_list.append(row[0])
+
+    # print(ret_list)
+    # connector.close()
+
+    # return jsonify(ret_list)

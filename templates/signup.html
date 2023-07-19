@@ -1,63 +1,97 @@
 <html>
-     <head>
-          <title>Sign Up</title>
-      </head>
-          <style>
-               body {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    font-family: Arial;
-               }
-               
-               .signup-box {
-                    width: 300px;
-                    padding: 20px;
-                    background-color: #f2f2f2;
-               }
-               
-               .signup-box h2 {
-                    text-align: center;
-               }
-               
-               .signup-box label,
-               .signup-box input[type="text"],
-               .signup-box input[type="password"],
-               .signup-box input[type="submit"] {
-                    display: block;
-                    width: 100%;
-                    margin-bottom: 10px;
-               }
-               
-               .signup-box input[type="submit"] {
-                    background-color: #4c72af;
-                    color: white;
-                    border: none;
-                    padding: 10px;
-                    cursor: pointer;
-               }
-               
-               .signup-box p {
-                    text-align: center;
-               }
-          </style>
-          <body>
-               <div class="signup-box">
-               <h2>Sign Up</h2>
-               <form method="POST" action="/signup">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                    
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                    
-                    <input type="submit" value="Sign Up">
-               </form>
-               <p>Already have an account? <a href="/login">Login</a></p>
-               </div>
-          </body>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            background-color: #ffffff;
+            margin: 0;
+        }
+
+        .signup-box {
+            text-align: left;
+            padding: 10px;
+            width: 300px;
+            background-color: #ebebeb;
+        }
+
+        .gamebuddy-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000102;
+            margin-bottom: 10px;
+        }
+
+        .signup-box h2 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+
+        .signup-box label {
+            display: block;
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        .signup-box input[type="text"],
+        .signup-box input[type="password"],
+        .signup-box input[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333333;
+            padding: 10px;
+        }
+
+        .signup-box input[type="submit"] {
+            background-color: #4c72af;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+
+        .signup-box p {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .signup-box p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    <div class="signup-box">
+        <h2>Sign Up</h2>
+        <form method="POST" action="/signup">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <input type="submit" value="Sign Up">
+        </form>
+        <p>Already have an account? <a href="/">Login</a></p>
+    </div>
+</body>
 </html>

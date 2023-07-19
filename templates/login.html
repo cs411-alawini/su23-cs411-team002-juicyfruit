@@ -1,49 +1,82 @@
 <html>
 <head>
-    <title>Login</title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: Arial;
+            background-color: #ffffff;
+            margin: 0;
         }
-        
+
         .login-box {
+            text-align: left;
+            padding: 10px;
             width: 300px;
-            padding: 20px;
-            
-            background-color: #f2f2f2;
+            background-color: #ebebeb;
         }
-        
+
+        .gamebuddy-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000102;
+            margin-bottom: 10px;
+        }
+
         .login-box h2 {
             text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 15px;
         }
-        
-        .login-box label,
+
+        .login-box label {
+            display: block;
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
         .login-box input[type="text"],
         .login-box input[type="password"],
         .login-box input[type="submit"] {
             display: block;
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333333;
+            padding: 10px;
         }
-        
+
         .login-box input[type="submit"] {
             background-color: #4c72af;
             color: white;
             border: none;
-            padding: 10px;
             cursor: pointer;
+            margin-top: 10px;
         }
-        
+
         .login-box p {
             text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .login-box p a {
+            color: #007bff;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
     <div class="login-box">
         <h2>Login</h2>
         <form method="POST" action="/login">
@@ -55,7 +88,7 @@
             
             <input type="submit" value="Login">
         </form>
-        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+        <p>Don't have an account? <a href="/signup">Sign Up</a></p>
     </div>
 </body>
 </html>
