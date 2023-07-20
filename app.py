@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, redirect, request, url_for
 from google.cloud.sql.connector import Connector, IPTypes
 import pymysql
 import sqlalchemy
@@ -26,24 +26,52 @@ pool = sqlalchemy.create_engine(
 )
 
 #Flask App Routes
-@app.route('/', methods=["GET"])
+@app.route('/', methods=["GET", "POST"])
 def index():
+    if request.method == 'POST':
+        # verify username & password match in Database
+
+        #eventually add way to make this redirect specific to the username & password, can str concatenate
+        # username & password
+        return redirect(url_for('gamesearch'))
+    
     return render_template("login.html")
    
-@app.route('/signup', methods=["GET"])
+@app.route('/signup', methods=["GET", "POST"])
 def signup():
+    if request.method == 'POST':
+        #verify username is unique and add user to the database
+
+        return redirect(url_for('gamesearch'))
     return render_template("signup.html")
 
+#Eventually add customized gamesearch page based on individual users
+@app.route('/gamesearch', methods=["GET", "POST"])
+def gamesearch():
+    if request.method == "POST":
+        #Get the information for when the user clicks submit 
+        category = request.form["category"]
+        genre = request.form["genre"]
+        price = request.form["price"]
+        print(category)
+        print(genre)
+        print(price)
+        
 
- # with pool.connect() as db_conn:
-    #     results = db_conn.execute(sqlalchemy.text("SELECT Name FROM User_Information LIMIT 9")).fetchall()
+    return render_template("main.html")
 
-    # ret_list = []
 
-    # for row in results:
-    #     ret_list.append(row[0])
 
-    # print(ret_list)
-    # connector.close()
+# Temp example to query database
+# with pool.connect() as db_conn:
+#     results = db_conn.execute(sqlalchemy.text("SELECT Name FROM User_Information LIMIT 9")).fetchall()
 
-    # return jsonify(ret_list)
+# ret_list = []
+
+# for row in results:
+#     ret_list.append(row[0])
+
+# print(ret_list)
+# connector.close()
+
+# return jsonify(ret_list)
