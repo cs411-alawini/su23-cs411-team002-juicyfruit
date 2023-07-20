@@ -30,6 +30,9 @@ pool = sqlalchemy.create_engine(
 def index():
     if request.method == 'POST':
         # verify username & password match in Database
+        username = request.form["username"]
+        password = request.form["password"]
+
 
         #eventually add way to make this redirect specific to the username & password, can str concatenate
         # username & password
@@ -41,7 +44,11 @@ def index():
 def signup():
     if request.method == 'POST':
         #verify username is unique and add user to the database
+        username = request.form["username"]
+        password = request.form["password"]
+        name = request.form["name"]
 
+        
         return redirect(url_for('gamesearch'))
     return render_template("signup.html")
 
@@ -53,13 +60,13 @@ def gamesearch():
         category = request.form["category"]
         genre = request.form["genre"]
         price = request.form["price"]
-        print(category)
-        print(genre)
-        print(price)
         
 
     return render_template("main.html")
 
+@app.route('/accountinfo', methods=["GET"])
+def accountinfo():
+    return render_template('accountinfo.html')
 
 
 # Temp example to query database
@@ -75,3 +82,7 @@ def gamesearch():
 # connector.close()
 
 # return jsonify(ret_list)
+
+# GetGamesWithPrice 
+# update_data      
+# user_data    

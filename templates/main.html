@@ -20,10 +20,9 @@
         }
 
         .gamebuddy-title {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: bold;
             color: #000102;
-            margin-bottom: 20px;
         }
 
         .main-box label {
@@ -37,7 +36,7 @@
         .main-box input[type="text"] {
             display: block;
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             font-size: 16px;
             color: #333333;
             padding: 10px;
@@ -64,29 +63,71 @@
             color: #007bff;
             text-decoration: none;
         }
+
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            text-decoration: none;
+            padding: 10px 10px;
+            background-color: #f2f2f2;
+            color: #333333;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #4c72af;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div class="gamebuddy-title">
         <h1>Steam GameBuddy</h1>
     </div>
+    <div class="tab-navigation">
+        <a class="tab active" href="/gamesearch">Game Search</a>
+        <a class="tab" href="/accountinfo">Account Info</a>
+    </div>
+
     <div class="main-box">
         <h2>Game Search</h2>
+        <label for="game_name">Game Name Keyword:</label>
+            <input type="text" id="game_name" name="game_name">
+
         <form method="POST" action="/gamesearch">
             <label for="category">Game Category:</label>
             <select id="category" name="category">
-                <option value="action">Action</option>
-                <option value="adventure">Adventure</option>
-                <option value="rpg">Role-playing (RPG)</option>
-                <!-- Add more options as needed -->
+                <option value="None">None</option>
+                <option value="CategorySinglePlayer">Singleplayer</option>
+                <option value="CategoryMultiplayer">Multiplayer</option>
+                <option value="CategoryCoop">Co-op</option>
+                <option value="CategoryInAppPurchase">In App Purchases</option>
+                <option value="CategoryIncludeSrcSDK">Includes Source SDK</option>
+                <option value="CategoryIncludeLevelEditor">Includes Level Editor</option>
+                <option value="CategoryVRSupport">VR Support</option>
             </select>
 
             <label for="genre">Game Genre:</label>
             <select id="genre" name="genre">
-                <option value="fps">First-person Shooter (FPS)</option>
-                <option value="strategy">Strategy</option>
-                <option value="puzzle">Puzzle</option>
-                <!-- Add more options as needed -->
+                <option value="None">None</option>
+                <option value="GenreIsNonGame">Non-Game</option>
+                <option value="GenreIsIndie">Indie</option>
+                <option value="GenreIsAction">Action</option>
+                <option value="GenreIsAdventure">Adventure</option>
+                <option value="GenreIsCasual">Casual</option>
+                <option value="GenreIsStrategy">Strategy</option>
+                <option value="GenreIsRPG">RPG</option>
+                <option value="GenreIsSimulation">Simulation</option>
+                <option value="GenreIsEarlyAccess">Early Access</option>
+                <option value="GenreIsFreeToPlay">Free To Play</option>
+                <option value="GenreIsSports">Sports</option>
+                <option value="GenreIsRacing">Racing</option>
+                <option value="GenreIsMassivelyMultiplayer">Massively Multiplayer</option>
             </select>
 
             <label for="price">Price Limit:</label>

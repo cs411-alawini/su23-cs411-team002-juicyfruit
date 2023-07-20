@@ -1,0 +1,166 @@
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            background-color: #ffffff;
+            margin: 0;
+        }
+
+        .main-box {
+            text-align: left;
+            padding: 20px;
+            width: 400px;
+            background-color: #ebebeb;
+        }
+
+        .gamebuddy-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #000102;
+        }
+
+        .main-box label {
+            display: block;
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .main-box select,
+        .main-box input[type="text"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333333;
+            padding: 10px;
+        }
+
+        .main-box input[type="submit"] {
+            background-color: #4c72af;
+            height: 30px;
+            width: 100%;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .main-box p {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .main-box p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            text-decoration: none;
+            padding: 10px 10px;
+            background-color: #f2f2f2;
+            color: #333333;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .tab.active {
+            background-color: #4c72af;
+            color: white;
+        }
+
+        .main-box {
+            text-align: left;
+            padding: 20px;
+            width: 400px;
+            background-color: #ebebeb;
+        }
+
+        .main-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .main-box label {
+            display: block;
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .main-box input[type="text"],
+        .main-box input[type="password"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #333333;
+            padding: 10px;
+        }
+
+        .main-box input[type="submit"] {
+            background-color: #4c72af;
+            height: 30px;
+            width: 100%;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .main-box p {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+        .main-box p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+        <a class="tab" href="/gamesearch">Game Search</a>
+        <a class="tab active" href="/accountinfo">Account Info</a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main-box">
+        <h2>Change Password</h2>
+        <form method="POST" action="/changepassword">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Current Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required>
+
+            <input type="submit" value="Change Password">
+        </form>
+    </div>
+
+</body>
+</html>
