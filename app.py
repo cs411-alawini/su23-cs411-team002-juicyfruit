@@ -1,9 +1,11 @@
-from flask import Flask, render_template, jsonify, redirect, request, url_for
+from flask import Flask, render_template, jsonify, redirect, request, url_for, flash
 from google.cloud.sql.connector import Connector, IPTypes
 import pymysql
 import sqlalchemy
+import random
 
 app = Flask(__name__)
+app.secret_key = 'juicyfruit1234234'
 
 # Connecting to our MySql Database
 # https://pypi.org/project/cloud-sql-python-connector/ 
@@ -26,16 +28,26 @@ pool = sqlalchemy.create_engine(
 )
 
 #Flask App Routes
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     if request.method == 'POST':
-        # verify username & password match in Database
+        #Verify username & password match in Database
         username = request.form["username"]
         password = request.form["password"]
+        
 
+        #Query to find if username & password combo exist
+        with pool.connect() as db_conn:
+            results = db_conn.execute(sqlalchemy.text(f"SELECT UserID, Password FROM User_Information WHERE UserID='{username}' AND Password='{password}'")).fetchall()
 
-        #eventually add way to make this redirect specific to the username & password, can str concatenate
-        # username & password
+        #Redirect back to login if no user found
+        if len(results) == 0:
+            flash("Incorrect Username or Password, Please try again", 'error')
+            return redirect(url_for('index'))
+        
+        #Eventually add way to make this redirect specific to the username & password, can str concatenate
+        #username & password to the url
         return redirect(url_for('gamesearch'))
     
     return render_template("login.html")
@@ -43,13 +55,25 @@ def index():
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == 'POST':
-        #verify username is unique and add user to the database
+        # Verify username is unique and add user to the database
+        # https://justinmatters.co.uk/wp/using-sqlalchemy-to-run-sql-procedures/ 
         username = request.form["username"]
         password = request.form["password"]
         name = request.form["name"]
+        computerid = random.randint(1000,5000)
 
+        #Adding user by calling stored procedure
+        try:
+           connection = pool.raw_connection() 
+           cursor = connection.cursor()
+           cursor.callproc("user_data", [f"{username}", computerid, f"{name}", f"{password}"])
+           connection.commit()
+        except:
+            flash(f"{username} already has an account, login or create a unique username", 'error')
+            return redirect(url_for('signup'))
         
         return redirect(url_for('gamesearch'))
+    
     return render_template("signup.html")
 
 #Eventually add customized gamesearch page based on individual users
@@ -67,21 +91,6 @@ def gamesearch():
 @app.route('/accountinfo', methods=["GET"])
 def accountinfo():
     return render_template('accountinfo.html')
-
-
-# Temp example to query database
-# with pool.connect() as db_conn:
-#     results = db_conn.execute(sqlalchemy.text("SELECT Name FROM User_Information LIMIT 9")).fetchall()
-
-# ret_list = []
-
-# for row in results:
-#     ret_list.append(row[0])
-
-# print(ret_list)
-# connector.close()
-
-# return jsonify(ret_list)
 
 # GetGamesWithPrice 
 # update_data      
