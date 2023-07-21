@@ -88,20 +88,25 @@ def gamesearch():
         category = request.form["category"]
         genre = request.form["genre"]
         price = request.form["price"]
+        reviewscore = request.form["reviewscore"]
         
+        print(price == '')
+        print(reviewscore)
+
+
         connection = pool.raw_connection() 
         cursor = connection.cursor()
-        cursor.callproc("RevScoreQuery", [0.9])
+        #cursor.callproc("RevScoreQuery", [0.9])
 
-        tpl = ("Game Name", "Metacritic Rating", "Average Review Score")
-        data = list(cursor.fetchall())
+        #tpl = ("Game Name", "Metacritic Rating", "Average Review Score")
+        #data = list(cursor.fetchall())
         connection.commit()
 
 
-        df = pd.DataFrame(data, columns=tpl)
-        table = df.to_html(classes='results-table', index=False)
+        #df = pd.DataFrame(data, columns=tpl)
+        #table = df.to_html(classes='results-table', index=False)
 
-        return render_template("displayquery.html", html_table=table)
+        #return render_template("displayquery.html", html_table=table)
 
 
     return render_template("main.html")
