@@ -78,6 +78,47 @@ def signup():
     
     return render_template("signup.html")
 
+@app.route('/accountinfo', methods=["GET", "POST"])
+def accountinfo():
+    if request.method == "POST":
+        #Verify information
+        username = request.form["username"]
+        old_password = request.form["password"]
+        new_password = request.form["new_password"]
+
+        #Update passoword
+        try:
+            connection = pool.raw_connection() 
+            cursor = connection.cursor()
+            cursor.callproc("update_password", [f"{username}", f"{old_password}", f"{new_password}"])
+            connection.commit()
+            flash("Password Updated Succesfully", 'message')
+            return redirect(url_for('accountinfo'))
+        except:
+            flash("User not in database or wrong password", 'error')
+            return redirect(url_for("accountinfo"))
+
+
+    return render_template('accountinfo.html')
+
+@app.route('/deleteaccount', methods=["GET", "POST"])
+def deleteacc():
+    if request.method == "POST":
+        username = request.form["username"]
+
+        # Delete user
+        try:
+            connection = pool.raw_connection() 
+            cursor = connection.cursor()
+            cursor.callproc("delete_user", [f"{username}"])
+            connection.commit()
+            flash("User succesfully deleted from Database", 'message')
+            return redirect(url_for("index"))
+        except:
+            flash("User not in Database", 'error')
+            return redirect(url_for("deleteacc"))
+
+    return render_template("deleteacc.html")
 
 #Eventually add customized gamesearch page based on individual users
 @app.route('/gamesearch', methods=["GET", "POST"])
@@ -129,48 +170,3 @@ def gamesearch():
 
 
     return render_template("main.html")
-
-@app.route('/accountinfo', methods=["GET", "POST"])
-def accountinfo():
-    if request.method == "POST":
-        #Verify information
-        username = request.form["username"]
-        old_password = request.form["password"]
-        new_password = request.form["new_password"]
-
-        #Update passoword
-        try:
-            connection = pool.raw_connection() 
-            cursor = connection.cursor()
-            cursor.callproc("update_password", [f"{username}", f"{old_password}", f"{new_password}"])
-            connection.commit()
-            flash("Password Updated Succesfully", 'message')
-            return redirect(url_for('accountinfo'))
-        except:
-            flash("User not in database or wrong password", 'error')
-            return redirect(url_for("accountinfo"))
-
-
-    return render_template('accountinfo.html')
-
-@app.route('/deleteaccount', methods=["GET", "POST"])
-def deleteacc():
-    if request.method == "POST":
-        username = request.form["username"]
-
-        # Delete user
-        try:
-            connection = pool.raw_connection() 
-            cursor = connection.cursor()
-            cursor.callproc("delete_user", [f"{username}"])
-            connection.commit()
-            flash("User succesfully deleted from Database", 'message')
-            return redirect(url_for("index"))
-        except:
-            flash("User not in Database", 'error')
-            return redirect(url_for("deleteacc"))
-
-    return render_template("deleteacc.html")
-
-
-# GetGamesWithPrice    
