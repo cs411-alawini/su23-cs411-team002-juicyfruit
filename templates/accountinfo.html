@@ -132,6 +132,18 @@
             color: #007bff;
             text-decoration: none;
         }
+
+        .delete-account {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #ff0000;
+            color: white;
+            padding: 2px;
+            text-decoration: none;
+            margin-top: 10px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -148,7 +160,7 @@
     <!-- Main content area -->
     <div class="main-box">
         <h2>Change Password</h2>
-        <form method="POST" action="/changepassword">
+        <form method="POST" action="/accountinfo">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -159,7 +171,9 @@
             <input type="password" id="new_password" name="new_password" required>
 
             <input type="submit" value="Change Password">
+            
         </form>
+        <a class="delete-account" href="/deleteaccount">Delete Account</a>
     </div>
 
 </body>

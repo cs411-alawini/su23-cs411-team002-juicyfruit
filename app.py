@@ -88,9 +88,29 @@ def gamesearch():
 
     return render_template("main.html")
 
-@app.route('/accountinfo', methods=["GET"])
+@app.route('/accountinfo', methods=["GET", "POST"])
 def accountinfo():
+    if request.method == "POST":
+        #Verify information
+        username = request.form["username"]
+        old_password = request.form["password"]
+        new_password = request.form["new_password"]
+
+        try:
+            connection = pool.raw_connection() 
+            cursor = connection.cursor()
+            cursor.callproc()
+        except:
+            flash("User not in database or wrong password")
+            return redirect(url_for("accountinfo"))
+
+
     return render_template('accountinfo.html')
+
+@app.route('/deleteaccount', methods=["GET", "POST"])
+def deleteacc():
+    return render_template("deleteacc.html")
+
 
 # GetGamesWithPrice 
 # update_data      

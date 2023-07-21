@@ -1,0 +1,85 @@
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            background-color: #ffffff;
+            margin: 0;
+        }
+
+        .account-box {
+            text-align: left;
+            padding: 10px;
+            width: 300px;
+            background-color: #ebebeb;
+        }
+
+        .gamebuddy-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000102;
+            margin-bottom: 10px;
+        }
+
+        .account-box h2 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+
+        .account-box label {
+            display: block;
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .account-box input[type="text"],
+        .account-box input[type="submit"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333333;
+            padding: 10px;
+        }
+
+        .account-box input[type="submit"] {
+            background-color: #f20000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .account-box p {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888888;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    <div class="account-box">
+        <h2>Delete</h2>
+        <form method="POST" action="/deleteaccount">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <input type="submit" value="Delete Account">
+        </form>
+    </div>
+</body>
+</html>
