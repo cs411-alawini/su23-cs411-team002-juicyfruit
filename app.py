@@ -90,23 +90,42 @@ def gamesearch():
         price = request.form["price"]
         reviewscore = request.form["reviewscore"]
         
-        print(price == '')
-        print(reviewscore)
-
-
         connection = pool.raw_connection() 
         cursor = connection.cursor()
-        #cursor.callproc("RevScoreQuery", [0.9])
 
-        #tpl = ("Game Name", "Metacritic Rating", "Average Review Score")
-        #data = list(cursor.fetchall())
+        if price != '' and reviewscore != '':
+            # UnionQuery
+            tpl = ("Game Name" , "Price", "Average Review Score", "Single Player?", "Multiplayer?")
+            cursor.callproc("Unionquery", [float(price), float(reviewscore)])
+        
+        elif reviewscore != '':
+            # RevScoreQuery
+            tpl = ("Game Name", "Metacritic Rating", "Average Review Score")
+            cursor.callproc("RevScoreQuery", [float(reviewscore)])
+
+        elif price != '':
+            # GetGamesWithPrice
+            tpl = ("Game Name", "Release Date", "Price")
+            cursor.callproc("GetGamesWithPrice", [float(price)])
+            
+
+        elif keyword != '':
+            # Keyword Search
+            tpl = ("Game Name", "Price", "Metacritic Rating")
+            cursor.execute(f"SELECT GameName, Price, MetacriticRating FROM Games WHERE GameName LIKE '%{keyword.lower()}%'")
+
+        data = list(cursor.fetchall())
+
         connection.commit()
 
+        df = pd.DataFrame(data, columns=tpl)
+        if price != '' and reviewscore != '':
+            df["Single Player?"] = df["Single Player?"].replace({1: 'Yes', 0: 'No'})
+            df["Multiplayer?"] = df["Multiplayer?"].replace({1: 'Yes', 0: 'No'})
 
-        #df = pd.DataFrame(data, columns=tpl)
-        #table = df.to_html(classes='results-table', index=False)
-
-        #return render_template("displayquery.html", html_table=table)
+        table = df.to_html(classes='results-table', index=False)
+        
+        return render_template("displayquery.html", html_table=table)
 
 
     return render_template("main.html")

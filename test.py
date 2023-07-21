@@ -37,9 +37,9 @@ computerid = random.randint(1000, 5000)
 #print(inputstr)
 
 cursor = connection.cursor()
-cursor.callproc("RevScoreQuery", [0.9])
+cursor.execute("SELECT * FROM User_Information LIMIT 3")
 print(cursor.fetchall())
-connection.commit()
+#connection.commit()
 
 
 
@@ -50,12 +50,12 @@ connection.commit()
 
 # Temp example to query database
 #with pool.connect() as db_conn:
-#    results = db_conn.execute(sqlalchemy.text(f"SELECT COUNT(*) FROM User_Information")).fetchall()
+ #   results = db_conn.execute(sqlalchemy.text(f"SELECT * FROM User_Information LIMIT 3")).fetchall()
 
 #ret_list = []
 
 #for row in results:
     #ret_list.append(row[0])
 
-#print(type(results[0][0]))
+#print(type(results[0]))
 #connector.close()
