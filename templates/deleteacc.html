@@ -66,6 +66,19 @@
             color: #888888;
         }
 
+        .flash-messages {
+        list-style: none;
+        padding: 0;
+        }
+
+        .flash-message {
+        background-color: #f2dede;
+        color: #a94442;
+        border: 1px solid #ebccd1;
+        padding: 10px;
+        margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -83,3 +96,13 @@
     </div>
 </body>
 </html>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}

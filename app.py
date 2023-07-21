@@ -52,6 +52,7 @@ def index():
     
     return render_template("login.html")
    
+
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == 'POST':
@@ -76,6 +77,7 @@ def signup():
     
     return render_template("signup.html")
 
+
 #Eventually add customized gamesearch page based on individual users
 @app.route('/gamesearch', methods=["GET", "POST"])
 def gamesearch():
@@ -85,6 +87,7 @@ def gamesearch():
         genre = request.form["genre"]
         price = request.form["price"]
         
+        #TODO
 
     return render_template("main.html")
 
@@ -96,12 +99,16 @@ def accountinfo():
         old_password = request.form["password"]
         new_password = request.form["new_password"]
 
+        #Update passoword
         try:
             connection = pool.raw_connection() 
             cursor = connection.cursor()
-            cursor.callproc()
+            cursor.callproc("update_password", [f"{username}", f"{old_password}", f"{new_password}"])
+            connection.commit()
+            flash("Password Updated Succesfully", 'message')
+            return redirect(url_for('accountinfo'))
         except:
-            flash("User not in database or wrong password")
+            flash("User not in database or wrong password", 'error')
             return redirect(url_for("accountinfo"))
 
 
@@ -109,9 +116,22 @@ def accountinfo():
 
 @app.route('/deleteaccount', methods=["GET", "POST"])
 def deleteacc():
+    if request.method == "POST":
+        username = request.form["username"]
+
+        # Delete user
+        try:
+            connection = pool.raw_connection() 
+            cursor = connection.cursor()
+            cursor.callproc("delete_user", [f"{username}"])
+            connection.commit()
+            flash("User succesfully deleted from Database", 'message')
+            return redirect(url_for("index"))
+        except:
+            flash("User not in Database", 'error')
+            return redirect(url_for("deleteacc"))
+
     return render_template("deleteacc.html")
 
 
-# GetGamesWithPrice 
-# update_data      
-# user_data    
+# GetGamesWithPrice    

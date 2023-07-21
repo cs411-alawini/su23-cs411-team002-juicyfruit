@@ -144,6 +144,19 @@
             margin-top: 10px;
             margin: 0 auto;
         }
+
+        .flash-messages {
+        list-style: none;
+        padding: 0;
+        }
+
+        .flash-message {
+        background-color: #f2dede;
+        color: #a94442;
+        border: 1px solid #ebccd1;
+        padding: 10px;
+        margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -151,13 +164,11 @@
         <h1>Steam GameBuddy</h1>
     </div>
 
-    <!-- Tab Navigation -->
     <div class="tab-navigation">
         <a class="tab" href="/gamesearch">Game Search</a>
         <a class="tab active" href="/accountinfo">Account Info</a>
     </div>
 
-    <!-- Main content area -->
     <div class="main-box">
         <h2>Change Password</h2>
         <form method="POST" action="/accountinfo">
@@ -178,3 +189,13 @@
 
 </body>
 </html>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
