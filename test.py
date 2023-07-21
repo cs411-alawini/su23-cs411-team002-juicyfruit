@@ -37,7 +37,8 @@ computerid = random.randint(1000, 5000)
 #print(inputstr)
 
 cursor = connection.cursor()
-cursor.callproc("user_data", [f"{id}", computerid, f"{name}", f"{password}"])
+cursor.callproc("RevScoreQuery", [0.9])
+print(cursor.fetchall())
 connection.commit()
 
 

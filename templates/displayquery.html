@@ -1,0 +1,46 @@
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial;
+            background-color: #ffffff;
+            margin: 0;
+        }
+
+        .results-table {
+            width: 80%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .results-table th, .results-table td {
+            border: 1px solid #333333;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .results-table th {
+            background-color: #4c72af;
+            color: white;
+        }
+
+        .gamebuddy-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000102;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    {{ html_table | safe }}
+</body>
+</html>
