@@ -6,7 +6,7 @@ import random
 import pandas as pd
 
 app = Flask(__name__)
-app.secret_key = 'juicyfruit1234234'
+app.secret_key = 'juicyfruit1234'
 
 # Connecting to our MySql Database
 # https://pypi.org/project/cloud-sql-python-connector/ 
@@ -120,6 +120,10 @@ def deleteacc():
 
     return render_template("deleteacc.html")
 
+@app.route('/friends', methods=["GET", "POST"])
+def friends():
+    return render_template("friends.html")
+
 #Eventually add customized gamesearch page based on individual users
 @app.route('/gamesearch', methods=["GET", "POST"])
 def gamesearch():
@@ -137,29 +141,29 @@ def gamesearch():
         if price != '' and reviewscore != '':
             # UnionQuery
             tpl = ("Game Name" , "Price", "Average Review Score", "Single Player?", "Multiplayer?")
-            cursor.callproc("Unionquery", [float(price), float(reviewscore)])
+            cursor.callproc("Unionquery", [float(price), float(reviewscore)/100])
         
         elif reviewscore != '':
             # RevScoreQuery
             tpl = ("Game Name", "Metacritic Rating", "Average Review Score")
-            cursor.callproc("RevScoreQuery", [float(reviewscore)])
+            cursor.callproc("RevScoreQuery", [float(reviewscore)/100])
 
         elif price != '':
             # GetGamesWithPrice
             tpl = ("Game Name", "Release Date", "Price")
             cursor.callproc("GetGamesWithPrice", [float(price)])
             
-
         elif keyword != '':
             # Keyword Search
             tpl = ("Game Name", "Price", "Metacritic Rating")
             cursor.execute(f"SELECT GameName, Price, MetacriticRating FROM Games WHERE GameName LIKE '%{keyword.lower()}%'")
 
         data = list(cursor.fetchall())
-
         connection.commit()
 
         df = pd.DataFrame(data, columns=tpl)
+
+        # Additional processing step for Unionquery
         if price != '' and reviewscore != '':
             df["Single Player?"] = df["Single Player?"].replace({1: 'Yes', 0: 'No'})
             df["Multiplayer?"] = df["Multiplayer?"].replace({1: 'Yes', 0: 'No'})

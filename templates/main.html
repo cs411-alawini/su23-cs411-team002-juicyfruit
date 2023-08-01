@@ -1,89 +1,6 @@
 <html>
 <head>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial;
-            background-color: #ffffff;
-            margin: 0;
-        }
-
-        .main-box {
-            text-align: left;
-            padding: 20px;
-            width: 400px;
-            background-color: #ebebeb;
-        }
-
-        .gamebuddy-title {
-            font-size: 30px;
-            font-weight: bold;
-            color: #000102;
-        }
-
-        .main-box label {
-            display: block;
-            font-size: 16px;
-            color: #333333;
-            margin-bottom: 10px;
-        }
-
-        .main-box select,
-        .main-box input[type="text"] {
-            display: block;
-            width: 100%;
-            margin-bottom: 5px;
-            font-size: 16px;
-            color: #333333;
-            padding: 10px;
-        }
-
-        .main-box input[type="submit"] {
-            background-color: #4c72af;
-            height: 30px;
-            width: 100%;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .main-box p {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #888888;
-        }
-
-        .main-box p a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .tab-navigation {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            text-decoration: none;
-            padding: 10px 10px;
-            background-color: #f2f2f2;
-            color: #333333;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .tab.active {
-            background-color: #4c72af;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
     <div class="gamebuddy-title">
@@ -92,6 +9,7 @@
     <div class="tab-navigation">
         <a class="tab active" href="/gamesearch">Game Search</a>
         <a class="tab" href="/accountinfo">Account Info</a>
+        <a class="tab" href="/friends">Friends</a>
     </div>
 
     <div class="main-box">
@@ -99,7 +17,7 @@
 
     
         <form method="POST" action="/gamesearch">
-            <label for="keyword">Game Name Keyword(Optional):</label>
+            <label for="keyword">Game Name Keyword:</label>
             <input type="text" id="keyword" name="keyword">
 
             <label for="category">Game Category:</label>
@@ -132,11 +50,11 @@
                 <option value="GenreIsMassivelyMultiplayer">Massively Multiplayer</option>
             </select>
 
-            <label for="price">Price Limit(Optional):</label>
+            <label for="price">Price Limit:</label>
             <input type="number" min=0 step=0.01 id="price" name="price">
 
-            <label for="reviewscore">Review Score(Optional):</label>
-            <input type="number" min=0 max=1 step=0.01 id="reviewscore" name="reviewscore">
+            <label for="reviewscore">Review Score:</label>
+            <input type="number" min=0 max=100 id="reviewscore" name="reviewscore">
             
             <input type="submit" value="Search">
         </form>
