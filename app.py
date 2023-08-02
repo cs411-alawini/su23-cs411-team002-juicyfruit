@@ -196,6 +196,93 @@ def removefriend():
 
     flash(f"Succesfully removed {frienduser} from your friends list", 'message')
     return redirect(url_for('friends'))
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Game Adding & Reccomendation Routes
+
+@app.route('/games', methods=["GET", "POST"])
+def games():
+    if 'username' not in session:
+        return redirect(url_for("index"))
+
+    #Setting up connection & getting username
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    username = session['username']
+
+    #If just getting games list
+    if request.method == "GET":
+
+        cursor.execute(f"""SELECT GameName
+                          FROM Games_Owned NATURAL JOIN
+                          (SELECT GameID, GameName FROM Games) g
+                           WHERE UserID='{username}'""")
+        games = list(cursor.fetchall())
+        connection.commit()
+
+
+        return render_template("games.html", games_list=games)
+    
+    #If adding reccomendation
+    if request.method == "POST":
+        game_name = request.form["game_name"]
+        rating = request.form["rating"]
+        time_played = request.form["time_played"]
+
+        cursor.execute(f"""SELECT GameID
+                        FROM Games
+                        WHERE GameName='{game_name}' """)
+
+        try:
+            gameid = list(cursor.fetchall())[0][0]
+        except:
+            flash("This game isn't in the database!", "error")
+            return redirect(url_for("games"))
+
+        try:
+            reccid = random.randint(0,10000)
+            cursor.callproc("user_review", 
+                            [reccid, int(gameid), username, int(rating), int(time_played)])
+            connection.commit()
+        except:
+            flash("Error adding reccomendation, check that the game is on your games list", 'error')
+            return redirect(url_for("games"))
+    
+    flash("Game reccomendation successfully added", 'message')
+    return redirect(url_for("games"))
+
+@app.route('/removegame', methods=["POST"])
+def removegame():
+    if 'username' not in session:
+        return redirect(url_for("index"))
+
+    # Setting up connection & getting username
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    username = session['username']
+    game_name = request.form["game_name"]
+
+    # Get GameID to remove
+    cursor.execute(f"""SELECT GameID
+                        FROM Games
+                        WHERE GameName='{game_name}' """)
+    
+    # Remove Game
+    gameid = list(cursor.fetchall())[0][0]
+    cursor.execute(f"DELETE FROM Games_Owned WHERE UserID='{username}' AND GameID='{gameid}'")
+    connection.commit()
+
+    return redirect(url_for('games'))
+
+
+
+@app.route('/searchgames')
+def searchgames():
+    return "TODO"
+
+@app.route('/addgame')
+def addgame():
+    return 'TODO'
+
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # GameSearch Routes
@@ -248,3 +335,5 @@ def gamesearch():
 
 
     return render_template("main.html")
+
+

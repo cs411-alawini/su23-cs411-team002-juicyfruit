@@ -30,6 +30,7 @@ body {
 }
 
 .main-box select,
+.main-box input[type="number"],
 .main-box input[type="text"] {
     display: block;
     width: 100%;

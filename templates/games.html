@@ -1,6 +1,25 @@
 <html>
 <head>
     <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+        .main-box {
+            display: flex;
+            flex-direction: row;
+        }   
+        .add-friend-box {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 300px;
+        }
+        .search-input {
+            width: 800px; 
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="gamebuddy-title">
@@ -13,5 +32,90 @@
         <a class="tab" href="/friends">Friends</a>
         <a class="tab active" href="/games">Your Games</a>
     </div>
+
+    <div class="main-box">
+        <div class="friend_list">
+            <h2>Your Games List:</h2>
+            <ul class="friend-list">
+                {% for game in games_list %}
+                <li class="friend-item">
+                    <span class="friend-name">{{ game[0] }}</span>
+                    <form class="remove-friend-form" method="POST" action="/removegame">
+                        <input type="hidden" name="game_name" value="{{ game[0] }}">
+                        <button class="remove-friend-button" type="submit">Remove {{game[0]}}</button>
+                    </form>
+                </li>
+                {% endfor %}
+                {% if not games_list %}
+                <span>No games added currently</span>
+                {% endif %}
+            </ul>
+        </div>
+            <div class="add-friend-box">
+                <h2>Add Game Reccomendation:</h2>
+                <form method="POST" action="/games">
+                    <input type="text" name="game_name" placeholder="Enter Game Name">
+                    <input type="number" name="rating" min=0 max=100 step=1 placeholder="Enter Rating 0-100">
+                    <input type="number" name="time_played" min=0 step=1 placeholder="Enter Hours Played">
+                    <input type="submit" value="Add Reccomendation">
+                </form>
+            </div>
+            
+    </div>
+    <input type="text" class="search-input" id="search-game" placeholder="Search for a game to add...">
+    <div class="search-results">
+    </div>
+
+    <script>
+        const searchBox = document.getElementById('search-game');
+        const resultsMenu = document.querySelector('.search-results');
+    
+        const fetchSearchResults = async (searchTerm) => {
+            try {
+                const response = await fetch(`/searchgames?term=${searchTerm}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+                return [];
+            }
+        };
+    
+        const updateResultsMenu = (results) => {
+            resultsMenu.innerHTML = '';
+    
+            results.forEach((game) => {
+                const gameItem = document.createElement('div');
+                gameItem.textContent = game;
+                gameItem.classList.add('search-result-item');
+                gameItem.addEventListener('click', () => {
+                    // Send a GET request to '/addgame' when a game is clicked
+                    window.location.href = `/addgame?game_name=${game}`;
+                });
+                resultsMenu.appendChild(gameItem);
+            });
+        };
+    
+        searchBox.addEventListener('input', async () => {
+            const searchTerm = searchBox.value;
+            if (searchTerm.length >= 3) {
+                const searchResults = await fetchSearchResults(searchTerm);
+                updateResultsMenu(searchResults);
+            } else {
+                resultsMenu.innerHTML = '';
+            }
+        });
+    </script>
 </body>
 </html>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
