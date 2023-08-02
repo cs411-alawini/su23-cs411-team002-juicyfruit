@@ -65,7 +65,7 @@ DELIMITER ;
 Procedure to add a game that the user wants
 ```sql
 DELIMITER //
-CREATE PROCEDURE add_game(user VARCHAR(255), game_id INT)
+CREATE PROCEDURE add_owned_game(user VARCHAR(255), game_id INT)
 BEGIN
   IF user IN (SELECT UserID FROM User_Information) THEN 
     INSERT INTO Games_Owned VALUES (user, game_id);
@@ -191,3 +191,67 @@ END;
 DELIMITER ;
 ```
 
+Procedure that searches game price 
+```sql
+DELIMITER //
+CREATE PROCEDURE GetGamesWithPrice(price_ FLOAT)
+BEGIN
+  SELECT DISTINCT GameName, ReleaseDate, Price
+  FROM Games	
+  WHERE Price = price_
+  ORDER BY GameName;
+END; 
+```
+
+Procedure that deletes a user from database
+```sql
+DELIMITER //
+CREATE PROCEDURE delete_user(IN user_id varchar(255))
+BEGIN
+IF user_id IN (SELECT UserId FROM User_Information)
+THEN
+DELETE FROM User_Information
+WHERE  UserId = user_id;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: This game is not in your list!';
+
+ END IF;
+END //
+```
+
+Procedure that executes advanced subquery 1. This gets the average score, gameName, and metacritic ratings of a game where the user can search for games above a certain average score.
+```sql
+// DELIMITER
+CREATE PROCEDURE RevScoreQuery(desired_score_ FLOAT)
+BEGIN
+SELECT g.GameName, MetacriticRating , CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore
+FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
+GROUP BY g.GameName, MetacriticRating
+HAVING AvgScore > desired_score_
+ORDER BY g.GameName
+LIMIT 15;
+END; //
+```
+
+Procedure for advanced subquery 2. This gets the name, price, average score, and single-player vs multiplayer status. It is a union between games where it is searching for single-player or multiplayer games with a certain price and score.
+```sql
+DELIMITER //
+CREATE PROCEDURE UnionQuery(price_ FLOAT, desired_score_ FLOAT)
+BEGIN
+(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore, CategorySinglePlayer, CategoryMultiPlayer
+FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
+WHERE  CategorySinglePlayer = 1 AND g.Price > price_
+GROUP BY g.GameName, g.Price, CategorySinglePlayer, CategoryMultiPlayer
+HAVING AvgScore > desired_score_)
+
+UNION
+
+(SELECT g.GameName, g.Price, CAST(AVG(reviewScore) AS DECIMAL (10,2))AS AvgScore, CategorySinglePlayer, CategoryMultiPlayer
+FROM Games g JOIN Reviews r ON (g.GameId = r.GameId)
+WHERE  CategoryMultiPlayer = 1 AND  g.Price  < price_
+GROUP BY g.GameName, g.Price, CategorySinglePlayer, CategoryMultiPlayer
+HAVING AvgScore > desired_score_)
+ORDER BY GameName
+LIMIT 15;
+END; //
+```
