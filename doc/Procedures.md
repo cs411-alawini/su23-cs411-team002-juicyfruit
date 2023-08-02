@@ -1,4 +1,17 @@
 
+Procedure that inserts a user into the database
+```sql
+DELIMITER //
+CREATE PROCEDURE user_data(IN id VARCHAR(255), computerID INT, name_ VARCHAR(255), password_ VARCHAR(255))
+BEGIN
+  IF id IN (SELECT UserID FROM User_Information) THEN 
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID already exists in User_Information table';
+  ELSE
+    INSERT INTO User_Information VALUES (id, computerID, name_, password_);
+  END IF;
+END; //
+```
+
 Procedure to insert a user review on a game. We make sure they own that game first
 ```sql
 DELIMITER //
@@ -30,7 +43,7 @@ END
 DELIMITER ;
 ```
 
-Procedure to cr
+Procedure to insert a user's computer information
 ```sql
 DELIMITER //
 CREATE PROCEDURE add_comp(user VARCHAR(255), os VARCHAR(255))
@@ -48,6 +61,8 @@ END
 //
 DELIMITER ;
 ```
+
+Procedure to add a game that the user wants
 ```sql
 DELIMITER //
 CREATE PROCEDURE add_game(user VARCHAR(255), game_id INT)
@@ -61,6 +76,8 @@ END
 //
 DELIMITER ;
 ```
+
+Procedure that checks if a game matches the users computer specs. If it does it will be inserted into the Meets_Specs table.
 ```sql
 DELIMITER //
 CREATE PROCEDURE specs(user VARCHAR(255), game_id INT)
@@ -94,17 +111,8 @@ END
 //
 DELIMITER ;
 ```
-```sql
-DELIMITER //
-CREATE PROCEDURE user_data(IN id VARCHAR(255), computerID INT, name_ VARCHAR(255), password_ VARCHAR(255))
-BEGIN
-  IF id IN (SELECT UserID FROM User_Information) THEN 
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID already exists in User_Information table';
-  ELSE
-    INSERT INTO User_Information VALUES (id, computerID, name_, password_);
-  END IF;
-END; //
-```
+
+Procedure that updates a user's password
 ```sql
 DELIMITER //
 CREATE PROCEDURE update_password(IN username varchar(255), old_password varchar(255), new_password varchar(255))
@@ -119,6 +127,8 @@ BEGIN
 END;  //
 DELIMITER ;
 ```
+
+Procedure that searches the games based on the genre filter 
 ```sql
 DELIMITER //
 CREATE PROCEDURE game_genre(_genre VARCHAR(255))
@@ -131,6 +141,8 @@ END;
 //
 DELIMITER ;
 ```
+
+Our advanced procedure that uses two advanced queries. The first advanced query is used to get the gameID, GameName, and UserRating from games that a user's friend recommended, and a cursor is pointing towards that. The second advanced query gets the average score of a game from our reviews dataset. When opening the cursor, we compare the score our friends give vs the average score and if the friend's score is higher, we insert it to a table so this game can be recommended to the user. We also decided that if the friend scored it over 90, then it also deserves to be recommended to the user. 
 ```sql
 DELIMITER //
 CREATE PROCEDURE adv_SP(user VARCHAR(255))
