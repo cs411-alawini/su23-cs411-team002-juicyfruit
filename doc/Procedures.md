@@ -255,3 +255,20 @@ ORDER BY GameName
 LIMIT 15;
 END; //
 ```
+
+Procedure that updates a user rating. But we can also update TimePlayed
+```sql
+DELIMITER //
+CREATE PROCEDURE update_data(IN game_name varchar(255), updated_rating INT)
+BEGIN
+
+    IF game_name IN (SELECT GameName FROM User_Recommended_Games)THEN
+        UPDATE User_Recommended_Games
+        SET UserRating = updated_rating
+        WHERE GameName = game_name;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: This game is not in your list!';
+    END IF;
+END //
+DELIMITER ;
+```
