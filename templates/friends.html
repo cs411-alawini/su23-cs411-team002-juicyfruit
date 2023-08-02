@@ -1,0 +1,63 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+        .main-box {
+            display: flex;
+            flex-direction: row;
+        }   
+       
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    <a class="logout-button" href="/logout">Logout</a>
+    <div class="tab-navigation">
+        <a class="tab" href="/gamesearch">Game Search</a>
+        <a class="tab" href="/accountinfo">Account Info</a>
+        <a class="tab active" href="/friends">Friends</a>
+        <a class="tab" href="/games">Your Games</a>    
+    </div>
+
+    <div class="main-box">
+        <div class="friend_list">
+            <h2>Friends List:</h2>
+            <ul class="friend-list">
+                {% for friend in friend_list %}
+                <li class="friend-item">
+                    <span class="friend-name">{{ friend[0] }}</span>
+                    <form class="remove-friend-form" method="POST" action="/removefriend">
+                        <input type="hidden" name="friendID" value="{{ friend[0] }}">
+                        <button class="remove-friend-button" type="submit">Remove {{friend[0]}}</button>
+                    </form>
+                </li>
+                {% endfor %}
+                {% if not friend_list %}
+                <span>No friends added currently</span>
+                {% endif %}
+            </ul>
+        </div>
+    
+        <div class="add-friend-box">
+            <h2>Add Friends:</h2>
+            <form method="POST" action="/friends">
+                <input type="text" name="friendusername" placeholder="Enter Friend's username">
+                <input type="submit" value="Add Friend">
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}

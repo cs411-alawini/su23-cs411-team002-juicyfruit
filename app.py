@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, redirect, request, url_for, flash
+from flask import Flask, render_template, jsonify, redirect, request, url_for, flash, session
 from google.cloud.sql.connector import Connector, IPTypes
 import pymysql
 import sqlalchemy
@@ -29,26 +29,25 @@ pool = sqlalchemy.create_engine(
 )
 
 #Flask App Routes
-
+# Login/Logout & Signup
 @app.route('/', methods=["GET", "POST"])
 def index():
     if request.method == 'POST':
-        #Verify username & password match in Database
         username = request.form["username"]
         password = request.form["password"]
         
-
-        #Query to find if username & password combo exist
+        #Verify username & password match in Database
         with pool.connect() as db_conn:
             results = db_conn.execute(sqlalchemy.text(f"SELECT UserID, Password FROM User_Information WHERE UserID='{username}' AND Password='{password}'")).fetchall()
 
         #Redirect back to login if no user found
         if len(results) == 0:
-            flash("Incorrect Username or Password, Please try again", 'error')
+            flash("Incorrect Username or Password, please try again or signup for an account", 'error')
             return redirect(url_for('index'))
-        
-        #Eventually add way to make this redirect specific to the username & password, can str concatenate
-        #username & password to the url
+
+        #Using sessions so that user can later have personalized page
+        session['username'] = username
+
         return redirect(url_for('gamesearch'))
     
     return render_template("login.html")
@@ -64,7 +63,7 @@ def signup():
         name = request.form["name"]
         computerid = random.randint(1000,5000)
 
-        #Adding user by calling stored procedure
+        # Adding user by calling stored procedure
         try:
            connection = pool.raw_connection() 
            cursor = connection.cursor()
@@ -74,10 +73,22 @@ def signup():
             flash(f"{username} already has an account, login or create a unique username", 'error')
             return redirect(url_for('signup'))
         
+        #Adding username to session
+        session['username'] = username
+
         return redirect(url_for('gamesearch'))
     
     return render_template("signup.html")
 
+@app.route('/logout')
+def logout():
+    #Removes username from session when clicking logout button
+    session.pop('username', None)
+    flash('Successfully logged out', 'message')
+    return redirect(url_for('index'))
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# User Account Routes
 @app.route('/accountinfo', methods=["GET", "POST"])
 def accountinfo():
     if request.method == "POST":
@@ -106,6 +117,11 @@ def deleteacc():
     if request.method == "POST":
         username = request.form["username"]
 
+        #Ensure user doesn't delete others account
+        if username != session['username']:
+            flash("This username isn't for your account!", 'error')
+            return redirect(url_for("deleteacc"))
+        
         # Delete user
         try:
             connection = pool.raw_connection() 
@@ -120,11 +136,69 @@ def deleteacc():
 
     return render_template("deleteacc.html")
 
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# User Friends Routes
 @app.route('/friends', methods=["GET", "POST"])
 def friends():
-    return render_template("friends.html")
+    #Check that the user is logged in
+    if 'username' not in session:
+        return redirect(url_for("index"))
 
-#Eventually add customized gamesearch page based on individual users
+    #Setting up connection & getting username
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    username = session['username']
+
+    #If we are just loading the friends list without adding a friend
+    if request.method == "GET":
+
+        cursor.execute(f"SELECT FriendID FROM Friends WHERE UserID='{username}'")
+        friends = list(cursor.fetchall())
+        connection.commit()
+
+
+        return render_template("friends.html", friend_list=friends)
+
+    # If user is adding to friends list
+    friendusername = request.form['friendusername']
+
+    #Make sure you aren't adding yourself
+    if username == friendusername:
+        flash("You can't add yourself as a friend!", "error")
+        return redirect(url_for("friends", method="GET"))
+    
+    #See if we can add the friend to the list
+    try:
+        cursor.callproc("add_friend", [username, friendusername])
+        connection.commit()
+    except:
+        flash("Friend you are trying to add is not in the database", "error")
+        return redirect(url_for("friends", method="GET"))
+
+    return redirect(url_for("friends", method="GET"))
+
+@app.route('/removefriend', methods=["POST"])
+def removefriend():
+    #Check that the user is logged in
+    if 'username' not in session:
+        return redirect(url_for("index"))
+
+    #Setting up connection & getting username
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    username = session['username']
+    frienduser = request.form["friendID"]
+
+    #Deleting friend from list
+    cursor.execute(f"DELETE FROM Friends WHERE UserID='{username}' AND FriendID='{frienduser}'")
+    # TODO: Making sure to remove friends both ways?
+    connection.commit()
+
+    flash(f"Succesfully removed {frienduser} from your friends list", 'message')
+    return redirect(url_for('friends'))
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# GameSearch Routes
 @app.route('/gamesearch', methods=["GET", "POST"])
 def gamesearch():
     if request.method == "POST":

@@ -1,7 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     align-items: center;
     height: 100vh;
     font-family: Arial;
@@ -12,7 +12,7 @@ body {
 .main-box {
     text-align: left;
     padding: 20px;
-    width: 400px;
+    width: 800px;
     background-color: #ebebeb;
 }
 
@@ -84,7 +84,7 @@ body {
 .signup-box {
     text-align: left;
     padding: 10px;
-    width: 300px;
+    width: 500px;
     background-color: #ebebeb;
 }
 
@@ -150,7 +150,7 @@ margin-bottom: 10px;
 .login-box {
     text-align: left;
     padding: 10px;
-    width: 300px;
+    width: 500px;
     background-color: #ebebeb;
 }
 
@@ -294,3 +294,71 @@ margin-bottom: 10px;
     z-index: 1;
 }
 
+.logout-button {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #af4c4c;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.friends_list {
+    flex: 1;
+}
+
+.add-friend-box {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 450px;
+}
+
+.add-friend-box input[type="text"],
+.add-friend-box input[type="submit"] {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.add-friend-box input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    line-height: 10px; 
+}
+
+.remove-friend-button {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.friend-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+    margin-bottom: 5px;
+}
+
+.friend-name {
+    margin-right: 10px;
+    margin-top: 10px;
+}
