@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+        .account-box {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    <div class="main-box">
+        <h2>Add Computer:</h2>
+        <form method="POST" action="/addcomp">
+            <label for="operating_system">Select an operating system</label>
+            <select id="operating_system" name="operating_system">
+                <option value="Windows">Windows</option>
+                <option value="Mac">Mac</option>
+                <option value="Linux">Linux</option>
+            </select>
+            <br>
+            <input type="submit" value="Add Computer">
+        </form>
+    </div>
+</body>
+</html>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash-messages">
+      {% for message in messages %}
+        <li class="flash-message">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}

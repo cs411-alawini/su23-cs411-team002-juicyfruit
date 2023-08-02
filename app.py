@@ -136,6 +136,24 @@ def deleteacc():
 
     return render_template("deleteacc.html")
 
+@app.route('/addcomp', methods=["GET", "POST"])
+def addcomp():
+    if 'username' not in session:
+        return redirect(url_for("index"))
+    
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    username = session['username']
+
+    if request.method == "POST":
+        os = request.form["operating_system"]
+        cursor.callproc("add_comp", [username, os])
+        connection.commit()
+        flash("Added your computer info to account", "message")
+        return redirect(url_for('accountinfo'))
+    
+    return render_template("addcomp.html")
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # User Friends Routes
 @app.route('/friends', methods=["GET", "POST"])
@@ -196,6 +214,7 @@ def removefriend():
 
     flash(f"Succesfully removed {frienduser} from your friends list", 'message')
     return redirect(url_for('friends'))
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Game Adding & Reccomendation Routes
 
@@ -274,7 +293,6 @@ def removegame():
     return redirect(url_for('games'))
 
 
-
 @app.route('/searchgames', methods=["GET"])
 def searchgames():
     keyword = request.args.get("keyword", '').strip()
@@ -323,9 +341,6 @@ def addgame():
     else:
         flash("Game already on your list!", "message")
         return redirect(url_for("games"))
-
-
-    
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # GameSearch Routes
