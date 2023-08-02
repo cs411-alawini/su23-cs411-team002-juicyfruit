@@ -1,0 +1,181 @@
+
+Procedure to insert a user review on a game. We make sure they own that game first
+```sql
+DELIMITER //
+CREATE PROCEDURE user_review(p_ReccID INT, p_GameID INT, p_UserID VARCHAR(255), p_UserRating INT, p_TimePlayed INT)
+BEGIN
+  DECLARE game VARCHAR(255);
+  IF p_GameID NOT IN (SELECT g.GameID FROM Games_Owned g WHERE p_UserID = g.UserID) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Game is not owned';
+  END IF;
+  SELECT GameName INTO game FROM Games WHERE Games.GameID = p_GameID;
+  INSERT INTO User_Recommended_Games VALUES(p_ReccID, p_GameID, p_UserID, game, p_UserRating, p_TimePlayed);
+END;
+//
+```
+
+Procedure to add a friend to a user and a user to a friend
+```sql
+DELIMITER //
+CREATE PROCEDURE add_friend(IN user VARCHAR(255), friend VARCHAR(255))
+BEGIN
+  IF user IN (SELECT UserID FROM User_Information) AND friend IN (SELECT UserID FROM User_Information)THEN 
+    INSERT INTO Friends VALUES (user, friend);
+    INSERT INTO Friends VALUES (friend, user);
+  ELSE
+   SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID doesn’t exists in User_Information table';
+  END IF;
+END
+//
+DELIMITER ;
+```
+
+Procedure to cr
+```sql
+DELIMITER //
+CREATE PROCEDURE add_comp(user VARCHAR(255), os VARCHAR(255))
+BEGIN
+  DECLARE compid VARCHAR(255);
+  SELECT u.ComputerID INTO compid FROM User_Information u WHERE u.UserID = user;
+  IF os = 'Mac' THEN 
+    INSERT INTO Computer_Information VALUES (compid, false, false, true);
+  ELSEIF os = 'Windows' THEN
+    INSERT INTO Computer_Information VALUES (compid, true, false, false);
+  ELSEIF os = 'Linux' THEN
+    INSERT INTO Computer_Information VALUES (compid, false, true, false);
+  END IF;
+END
+//
+DELIMITER ;
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE add_game(user VARCHAR(255), game_id INT)
+BEGIN
+  IF user IN (SELECT UserID FROM User_Information) THEN 
+    INSERT INTO Games_Owned VALUES (user, game_id);
+  ELSE
+   SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID doesn’t exists in User_Information table';
+  END IF;
+END
+//
+DELIMITER ;
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE specs(user VARCHAR(255), game_id INT)
+BEGIN
+  DECLARE compID VARCHAR(255);
+  DECLARE w_os BOOL;
+  DECLARE m_os BOOL;
+  DECLARE l_os BOOL;
+  
+  IF user NOT IN (SELECT UserID FROM User_Information) THEN 
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID doesn’t exist in User_Information table';
+  END IF;
+  SELECT u.ComputerID INTO compID
+  FROM  User_Information u 
+  WHERE u.UserID = user;
+  
+  SELECT PlatformWindows, PlatformMac, PlatformLinux INTO w_os, m_os, l_os
+  FROM  Computer_Information u
+  WHERE u.ComputerID = ComputerID;
+  IF m_os = true AND (SELECT PlatformMac FROM Games WHERE game_id = GameID) = true THEN
+    INSERT INTO Meets_Specs VALUES (compID, game_id, false, false, true);
+  ELSEIF w_os = true AND (SELECT PlatformWindows FROM Games WHERE game_id = GameID) = true THEN
+    INSERT INTO Meets_Specs VALUES (compID, game_id, true, false, false);
+  ELSEIF l_os = true AND (SELECT PlatformLinux FROM Games WHERE game_id = GameID) = true THEN
+    INSERT INTO Meets_Specs VALUES (compID, game_id, false, true, false);
+  ELSE 
+   SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Game is not compatible';
+  END IF;
+  
+END
+//
+DELIMITER ;
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE user_data(IN id VARCHAR(255), computerID INT, name_ VARCHAR(255), password_ VARCHAR(255))
+BEGIN
+  IF id IN (SELECT UserID FROM User_Information) THEN 
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: ID already exists in User_Information table';
+  ELSE
+    INSERT INTO User_Information VALUES (id, computerID, name_, password_);
+  END IF;
+END; //
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE update_password(IN username varchar(255), old_password varchar(255), new_password varchar(255))
+BEGIN
+    IF (username, old_password) IN (SELECT UserID, Password FROM User_Information)THEN
+        UPDATE User_Information
+        SET Password = new_password
+        WHERE UserID = username;
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: This account doesnt exist!';
+    END IF;
+END;  //
+DELIMITER ;
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE game_genre(_genre VARCHAR(255))
+BEGIN
+  SET @sql = CONCAT('SELECT GameName, ReleaseDate, MetacriticRating, Price FROM Games WHERE ', _genre, ' = true;');
+  PREPARE stmt FROM @sql;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
+END;
+//
+DELIMITER ;
+```
+```sql
+DELIMITER //
+CREATE PROCEDURE adv_SP(user VARCHAR(255))
+BEGIN
+  DECLARE var_game_id INT;
+  DECLARE var_game_name VARCHAR(255);
+  DECLARE var_rating INT;
+  DECLARE var_price float;
+  DECLARE avgScore DECIMAL(10,4);
+  
+  DECLARE done BOOLEAN DEFAULT FALSE;
+  DECLARE friend_game CURSOR FOR ( SELECT ur.GameID, ur.GameName, ur.UserRating
+                                  FROM Friends f JOIN User_Recommended_Games ur ON (f.FriendID = ur.UserID)
+                                  WHERE f.UserID = user
+                                  GROUP BY GameID, GameName, UserRating
+                                  HAVING UserRating > 50
+                                  );
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+  DROP TABLE IF EXISTS NewTable;
+  CREATE TABLE NewTable(game_id INT, game_name VARCHAR(255), rating float, price float);
+  
+  OPEN friend_game;
+    cloop: LOOP
+    FETCH friend_game INTO var_game_id, var_game_name, var_rating;
+    SET var_price = (SELECT Price FROM Games g WHERE g.GameID = var_game_id);
+    SET avgScore = (SELECT CAST(AVG(reviewScore) AS DECIMAL (10,4))
+                    FROM Games g NATURAL JOIN Reviews r
+                    WHERE g.GameID = var_game_id
+                    GROUP BY g.GameID);
+    IF done THEN
+      LEAVE cloop;
+    END IF;
+    
+    IF CAST(var_rating AS DECIMAL (10,4))/100 > avgScore THEN
+      INSERT INTO NewTable VALUES(var_game_id, var_game_name,CAST(var_rating AS DECIMAL (10,4))/100, var_price);
+    ELSEIF CAST(var_rating AS DECIMAL (10,4))/100 > .90 THEN
+      INSERT INTO NewTable VALUES(var_game_id, var_game_name,CAST(var_rating AS DECIMAL (10,4))/100, var_price);
+    END IF;
+    END LOOP cloop;
+    
+    SELECT *
+    FROM NewTable
+    ORDER BY game_name;
+END;
+//
+DELIMITER ;
+```
+
