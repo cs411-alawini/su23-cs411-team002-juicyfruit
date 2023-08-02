@@ -275,14 +275,57 @@ def removegame():
 
 
 
-@app.route('/searchgames')
+@app.route('/searchgames', methods=["GET"])
 def searchgames():
-    return "TODO"
+    keyword = request.args.get("keyword", '').strip()
 
-@app.route('/addgame')
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    
+    cursor.execute(f"""SELECT GameName
+                        FROM Games 
+                        WHERE GameName LIKE'%{keyword.lower()}%'""")
+    data = list(cursor.fetchall())
+    
+    return jsonify(data)
+
+@app.route('/addgame', methods=["GET"])
 def addgame():
-    return 'TODO'
+    if 'username' not in session:
+        return redirect(url_for("index"))
+    
+    game_name = request.args.get("game_name", '').strip()
+    username = session['username']
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
 
+    print(game_name)
+
+    cursor.execute(f"""SELECT GameID
+                        FROM Games
+                        WHERE GameName='{game_name}' """)
+    try:
+        gameid = list(cursor.fetchall())[0][0]
+    except:
+        flash("Error adding this game, try a different one", 'error')
+        redirect(url_for("games"))
+
+    #Check if game already already on the list
+    cursor.execute(f"""SELECT GameID
+                        FROM Games_Owned
+                        WHERE UserID='{username}'""")
+    gametpl=(gameid,)
+
+    if gametpl not in list(cursor.fetchall()):
+        cursor.callproc("add_owned_game", [username, int(gameid)])
+        connection.commit()
+        return redirect(url_for("games"))
+    else:
+        flash("Game already on your list!", "message")
+        return redirect(url_for("games"))
+
+
+    
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # GameSearch Routes

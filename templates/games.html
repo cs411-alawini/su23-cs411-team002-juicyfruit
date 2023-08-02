@@ -13,12 +13,7 @@
             align-items: flex-start;
             margin-left: 300px;
         }
-        .search-input {
-            width: 800px; 
-            padding: 10px;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+        
     </style>
 </head>
 <body>
@@ -69,10 +64,10 @@
     <script>
         const searchBox = document.getElementById('search-game');
         const resultsMenu = document.querySelector('.search-results');
-    
+
         const fetchSearchResults = async (searchTerm) => {
             try {
-                const response = await fetch(`/searchgames?term=${searchTerm}`);
+                const response = await fetch(`/searchgames?keyword=${searchTerm}`);
                 const data = await response.json();
                 return data;
             } catch (error) {
@@ -86,10 +81,9 @@
     
             results.forEach((game) => {
                 const gameItem = document.createElement('div');
-                gameItem.textContent = game;
+                gameItem.textContent = game[0];
                 gameItem.classList.add('search-result-item');
                 gameItem.addEventListener('click', () => {
-                    // Send a GET request to '/addgame' when a game is clicked
                     window.location.href = `/addgame?game_name=${game}`;
                 });
                 resultsMenu.appendChild(gameItem);
@@ -98,7 +92,7 @@
     
         searchBox.addEventListener('input', async () => {
             const searchTerm = searchBox.value;
-            if (searchTerm.length >= 3) {
+            if (searchTerm.length >= 1) {
                 const searchResults = await fetchSearchResults(searchTerm);
                 updateResultsMenu(searchResults);
             } else {
