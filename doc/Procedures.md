@@ -43,19 +43,19 @@ END
 DELIMITER ;
 ```
 
-Procedure to insert a user's computer information
+Procedure to update a user's computer information
 ```sql
 DELIMITER //
-CREATE PROCEDURE add_comp(user VARCHAR(255), os VARCHAR(255))
+CREATE PROCEDURE update_comp(user VARCHAR(255), os VARCHAR(255))
 BEGIN
   DECLARE compid VARCHAR(255);
   SELECT u.ComputerID INTO compid FROM User_Information u WHERE u.UserID = user;
   IF os = 'Mac' THEN 
-    INSERT INTO Computer_Information VALUES (compid, false, false, true);
+    UPDATE Computer_Information SET PlatformMac = true WHERE compid = Computer_Information.ComputerID;
   ELSEIF os = 'Windows' THEN
-    INSERT INTO Computer_Information VALUES (compid, true, false, false);
+    UPDATE Computer_Information SET PlatformWindows = true WHERE compid = Computer_Information.ComputerID;
   ELSEIF os = 'Linux' THEN
-    INSERT INTO Computer_Information VALUES (compid, false, true, false);
+    UPDATE Computer_Information SET PlatformLinux = true WHERE compid = Computer_Information.ComputerID;
   END IF;
 END
 //
