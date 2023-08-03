@@ -147,9 +147,9 @@ def addcomp():
 
     if request.method == "POST":
         os = request.form["operating_system"]
-        cursor.callproc("add_comp", [username, os])
+        cursor.callproc("update_comp", [username, os])
         connection.commit()
-        flash("Added your computer info to account", "message")
+        flash("Updated your computer info", "message")
         return redirect(url_for('accountinfo'))
     
     return render_template("addcomp.html")
@@ -417,4 +417,5 @@ def gamesearch():
 
     return render_template("main.html")
 
-
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
