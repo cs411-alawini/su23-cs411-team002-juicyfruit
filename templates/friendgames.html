@@ -1,0 +1,57 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+        .main-box {
+            display: flex;
+            flex-direction: row;
+        } 
+        .friend_list {
+            margin-right: 80px;
+        }
+        .friend_list2 {
+            margin-right: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="gamebuddy-title">
+        <h1>Steam GameBuddy</h1>
+    </div>
+    <a class="logout-button" href="/logout">Logout</a>
+    <a class="back-button" href="/friends">Back</a>
+
+    <div class="main-box">
+        <div class="friend_list">
+            
+            <h2>{{friend}}'s Games List:</h2>
+            <ul class="friend-list">
+                {% for game in games_list %}
+                <li class="friend-item">
+                    <span class="friend-name">{{ game[0] }}</span>
+                </li>
+                {% endfor %}
+                {% if not games_list %}
+                <span>No games added currently</span>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="friend_list2">
+            <h2>{{friend}}'s Reccomendation List:</h2>
+            <ul class="friend-list">
+                <h>Game Name | Rating</h>
+                <h>-----------------------------</h>
+                {% for rec in rec_list %}
+                <li class="friend-item">
+                    <span class="friend-name">{{ rec[0]}}</span>
+                    <span class="friend-name">: {{rec[1]}}</span>
+                </li>
+                {% endfor %}
+                {% if not rec_list %}
+                <span>No Reccomendations added currently</span>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

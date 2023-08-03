@@ -335,7 +335,7 @@ margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 450px;
+    margin-left: 350px;
 }
 
 .add-friend-box input[type="text"],
@@ -402,4 +402,23 @@ margin-bottom: 10px;
 }
 .search-result-item:hover {
     background-color: #f2f2f2;
+}
+
+.friend-games-button {
+    background-color: #005d00; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.back-button {
+    position: absolute;
+    top: 105;
+    left: 34%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
 }

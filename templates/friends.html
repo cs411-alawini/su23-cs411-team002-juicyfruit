@@ -28,9 +28,13 @@
                 {% for friend in friend_list %}
                 <li class="friend-item">
                     <span class="friend-name">{{ friend[0] }}</span>
+                    <form class="friend-games-form" action="/friendgames">
+                        <input type="hidden" name="friendusername" value="{{ friend[0] }}">
+                        <button class="friend-games-button" type="submit">Games of {{ friend[0] }}</button>
+                    </form>
                     <form class="remove-friend-form" method="POST" action="/removefriend">
                         <input type="hidden" name="friendID" value="{{ friend[0] }}">
-                        <button class="remove-friend-button" type="submit">Remove {{friend[0]}}</button>
+                        <button class="remove-friend-button" type="submit">Remove {{ friend[0] }}</button>
                     </form>
                 </li>
                 {% endfor %}
@@ -43,7 +47,7 @@
         <div class="add-friend-box">
             <h2>Add Friends:</h2>
             <form method="POST" action="/friends">
-                <input type="text" name="friendusername" placeholder="Enter Friend's username">
+                <input type="text" name="friendusername" placeholder="Enter username">
                 <input type="submit" value="Add Friend">
             </form>
         </div>

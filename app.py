@@ -317,8 +317,6 @@ def addgame():
     connection = pool.raw_connection() 
     cursor = connection.cursor()
 
-    print(game_name)
-
     cursor.execute(f"""SELECT GameID
                         FROM Games
                         WHERE GameName='{game_name}' """)
@@ -341,6 +339,31 @@ def addgame():
     else:
         flash("Game already on your list!", "message")
         return redirect(url_for("games"))
+    
+@app.route('/friendgames', methods=["GET"])
+def friendgames():
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+    frienduser = request.args.get("friendusername")
+
+    cursor.execute(f"""SELECT GameName
+                          FROM Games_Owned NATURAL JOIN
+                          (SELECT GameID, GameName FROM Games) g
+                           WHERE UserID='{frienduser}'""")
+    games_list = list(cursor.fetchall())
+
+    cursor.execute(f"""SELECT GameName, UserRating
+                        FROM User_Recommended_Games
+                        WHERE UserID='{frienduser}'""")
+    
+    rec_list = list(cursor.fetchall())
+
+    connection.commit()
+
+    return render_template("friendgames.html", 
+                           friend=frienduser, 
+                           games_list=games_list, 
+                           rec_list=rec_list)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # GameSearch Routes
