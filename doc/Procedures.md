@@ -272,3 +272,18 @@ BEGIN
 END //
 DELIMITER ;
 ```
+
+Trigger that automatically inserts computer information once a user signs up
+```sql
+DELIMITER //
+CREATE TRIGGER UpdateCompInfo AFTER INSERT ON User_Information FOR EACH ROW
+BEGIN
+    DECLARE user_id VARCHAR(255);
+    SET user_id = (SELECT UserID FROM User_Information WHERE ComputerID = NEW.ComputerID);
+    IF user_id IS NOT NULL THEN
+      INSERT INTO Computer_Information VALUES (NEW.ComputerID, FALSE, FALSE, FALSE);
+    END IF;
+END;
+//
+DELIMITER ;
+```
