@@ -384,6 +384,10 @@ def gamesearch():
             # UnionQuery
             tpl = ("Game Name" , "Price", "Average Review Score", "Single Player?", "Multiplayer?")
             cursor.callproc("Unionquery", [float(price), float(reviewscore)/100])
+
+        elif genre != 'None':
+            tpl = ("Game Name", "Release Date", "Metacritic Rating", "Price in $")
+            cursor.callproc("game_genre", [genre])
         
         elif reviewscore != '':
             # RevScoreQuery
@@ -392,12 +396,12 @@ def gamesearch():
 
         elif price != '':
             # GetGamesWithPrice
-            tpl = ("Game Name", "Release Date", "Price")
+            tpl = ("Game Name", "Release Date", "Price in $")
             cursor.callproc("GetGamesWithPrice", [float(price)])
             
         elif keyword != '':
             # Keyword Search
-            tpl = ("Game Name", "Price", "Metacritic Rating")
+            tpl = ("Game Name", "Price in $", "Metacritic Rating")
             cursor.execute(f"SELECT GameName, Price, MetacriticRating FROM Games WHERE GameName LIKE '%{keyword.lower()}%'")
 
         data = list(cursor.fetchall())
@@ -416,6 +420,31 @@ def gamesearch():
 
 
     return render_template("main.html")
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Game Reccomender Route
+@app.route('/gamerec', methods=["GET"])
+def gamerec():
+    if 'username' not in session:
+        return redirect(url_for("index"))
+    
+    username = session['username']
+    connection = pool.raw_connection() 
+    cursor = connection.cursor()
+
+    cursor.callproc('adv_SP', [username])
+    tpl = ("GameID", "Game Name","Rating", "Price in $")
+
+    data= list(cursor.fetchall())
+    connection.commit()
+
+    df = pd.DataFrame(data, columns=tpl)
+    df = df.drop(columns=["GameID"])
+    df["Rating"] = df["Rating"] * 100
+
+    table = df.to_html(classes='results-table', index=False)
+    
+    return render_template("gamerec.html", html_table=table)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
