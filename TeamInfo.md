@@ -20,8 +20,8 @@
 |   Info      |        Description     |
 | ----------- | ---------------------- |
 |  Title      |       GameBuddy     |
-| System URL  |      link_to_system    |
-| Video Link  |      [link_to_video](https://mediaspace.illinois.edu/media/t/1_vawmkql1)     |
+| System URL  |      [Website Link](http://35.209.220.118:5000)    |
+| Video Link  |      [Video Demo](https://mediaspace.illinois.edu/media/t/1_vawmkql1)     |
 
 ## Project Summary
 
